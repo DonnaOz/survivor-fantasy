@@ -1,597 +1,572 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'PingFang SC'}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; color: #103cc0; -webkit-text-stroke: #103cc0}
-    span.s1 {font: 12.0px Helvetica}
-    span.s2 {font: 12.0px 'Lucida Grande'}
-    span.s3 {font: 12.0px 'Apple Color Emoji'}
-    span.s4 {font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: 0px #000000}
-    span.s5 {font: 14.7px Arial; text-decoration: underline ; font-kerning: none}
-    span.s6 {font: 12.0px 'Hiragino Sans'}
-    span.s7 {font: 12.0px 'PingFang SC'}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Survivor 50 · Fantasy League</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06080e;
+  --text:#f0ebe0;
+  --muted:#5a5040;
+  --muted2:#8a7a60;
+  --amber:#e8a020;
+  --amber2:#f0c050;
+  --fire:#c84010;
+  --warm:#d06020;
+  --green:#4a9a30;
+  --nav:66px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden}
+canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
+.ember-wrap{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.ember{position:absolute;border-radius:999px;animation:floatUp linear infinite;opacity:0}
+@keyframes floatUp{
+  0%{transform:translateY(0) translateX(0);opacity:0}
+  10%{opacity:.85}
+  85%{opacity:.5}
+  100%{transform:translateY(-80vh) translateX(var(--drift));opacity:0}
+}
+.app{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:16px 14px calc(var(--nav) + 28px)}
+
+/* ── HEADER ── */
+.s-header{text-align:center;padding:24px 0 18px}
+.s-logo{width:130px;height:auto;display:block;margin:0 auto 10px;filter:drop-shadow(0 4px 16px rgba(232,160,32,.35))}
+.s-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--muted2);margin-top:4px}
+.s-updated{font-size:11px;color:var(--muted);margin-top:6px}
+
+/* ── DIVIDER ── */
+.warm-div{height:1px;background:linear-gradient(90deg,transparent,rgba(200,100,20,.55),rgba(232,160,32,.4),rgba(200,100,20,.55),transparent);margin:16px 0}
+
+/* ── SECTION LABEL ── */
+.sec-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
+
+/* ── TOP 5 ── */
+.top5{display:grid;gap:1px;margin-bottom:20px}
+.t5{display:flex;align-items:center;gap:12px;padding:13px 6px;border-bottom:1px solid rgba(255,255,255,.05)}
+.t5:first-child{border-top:1px solid rgba(255,255,255,.05)}
+.t5-rank{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--muted2);width:22px;text-align:center;flex:0 0 22px}
+.t5-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--text);flex:1;letter-spacing:.02em}
+.t5-delta{font-size:11px;font-weight:700;margin-right:6px;white-space:nowrap}
+.t5-delta.up{color:#6db86d}
+.t5-delta.down{color:#c06050}
+.t5-delta.same{color:var(--muted)}
+.t5-pts{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--amber)}
+.t5-pts em{font-size:11px;font-style:normal;color:var(--muted2);margin-left:2px}
+
+/* ── CASTAWAY GRID — 3 columns mobile-first ── */
+.cast-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-bottom:6px;
+}
+@media(min-width:500px){.cast-grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:680px){.cast-grid{grid-template-columns:repeat(5,1fr)}}
+
+.c-box{
+  padding:7px 6px;
+  border-radius:7px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;
+  letter-spacing:.02em;
+  text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  line-height:1.2;
+}
+.c-box.alive{
+  background:rgba(232,160,32,.11);
+  border:1px solid rgba(232,160,32,.5);
+  color:#f5d070;
+  box-shadow:0 0 7px rgba(232,160,32,.28),inset 0 0 5px rgba(232,160,32,.07);
+}
+.c-box.jury{
+  background:rgba(100,180,100,.09);
+  border:1px solid rgba(100,180,100,.38);
+  color:#90c878;
+  box-shadow:0 0 7px rgba(100,180,100,.22),inset 0 0 5px rgba(100,180,100,.05);
+}
+.c-box.out{
+  background:rgba(255,255,255,.022);
+  border:1px solid rgba(255,255,255,.055);
+  color:rgba(120,110,95,.45);
+}
+.jury-gavel{display:inline-flex;align-items:center;flex:0 0 auto;opacity:.85;margin-left:1px}
+.jury-gavel svg{width:13px;height:13px;display:block}
+
+/* ── VIEW MORE ── */
+.view-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);background:none;border:none;cursor:pointer;padding:0;opacity:.85}
+.view-more:hover{opacity:1}
+
+/* ── VIEWS ── */
+.view{display:none;margin-top:4px}
+.view.active{display:block}
+
+/* ── LEADERBOARD ── */
+.lb-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+.lb-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text)}
+.lb-sub{font-size:12px;color:var(--muted2);margin-bottom:14px}
+.updated-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(232,160,32,.3);background:rgba(232,160,32,.08);color:var(--amber2);border-radius:999px;padding:5px 12px;font-size:11px;font-weight:700;font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em;white-space:nowrap}
+.updated-dot{width:6px;height:6px;border-radius:999px;background:var(--amber);box-shadow:0 0 6px var(--amber);flex:0 0 6px}
+.lb-search{width:100%;border:none;border-bottom:1px solid rgba(255,255,255,.07);background:transparent;color:var(--text);padding:11px 2px;font-size:14px;font-family:'Barlow',sans-serif;outline:none;margin-bottom:18px}
+.lb-search::placeholder{color:var(--muted)}
+
+.p-row{border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
+.p-row:hover .p-name{color:var(--amber2)}
+.p-head-row{display:grid;grid-template-columns:28px 1fr auto 20px;align-items:center;gap:10px;padding:13px 4px}
+.p-rank{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--muted2);text-align:center}
+.p-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);transition:color .12s;letter-spacing:.02em}
+.p-meta-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.p-tag{font-size:10px;color:var(--muted2);background:rgba(255,255,255,.04);border-radius:3px;padding:2px 6px}
+.p-right{text-align:right}
+.p-pts{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:900;color:var(--amber)}
+.p-pts em{font-size:10px;font-style:normal;color:var(--muted2);margin-left:1px}
+.p-ep-delta{font-size:10px;font-weight:700;margin-top:1px}
+.p-ep-delta.up{color:#6db86d}
+.p-ep-delta.down{color:#c06050}
+.p-ep-delta.same{color:var(--muted)}
+.p-chev{color:var(--muted);transition:transform .18s;flex:0 0 18px}
+.p-row.open .p-chev{transform:rotate(180deg)}
+.p-expand{max-height:0;opacity:0;overflow:hidden;transition:max-height .22s ease,opacity .18s}
+.p-row.open .p-expand{max-height:520px;opacity:1;padding-bottom:14px}
+.expand-inner{padding:2px 4px 0}
+.d-lbl{font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;font-weight:700;margin-top:10px}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11px;border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px}
+.chip.tribe{background:rgba(232,160,32,.09);border:1px solid rgba(232,160,32,.28);color:#e8c070}
+.chip.tribe.out{opacity:.35;text-decoration:line-through;background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);color:var(--muted2)}
+.chip.win{background:rgba(74,154,48,.10);border:1px solid rgba(74,154,48,.35);color:#80c060}
+.chip.win.out{opacity:.35;text-decoration:line-through;background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);color:var(--muted2)}
+.ep-pips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.ep-pip{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:28px}
+.ep-pip span:first-child{font-size:8px;color:var(--muted);font-weight:700;font-family:'Barlow Condensed',sans-serif}
+.ep-pip span:last-child{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:var(--text)}
+.ep-pip span.zero{color:var(--muted);font-weight:400}
+
+/* ── RESULTS ── */
+.r-section{padding-top:8px}
+.r-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
+.r-title{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.r-body{font-size:13px;color:var(--muted2);line-height:1.6;max-width:500px;margin-bottom:18px}
+.r-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:999px;background:transparent;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber2);text-decoration:none;position:relative;border:none}
+.r-btn::before{content:'';position:absolute;inset:0;border-radius:999px;border:1.5px solid var(--amber);box-shadow:0 0 10px rgba(232,160,32,.4),inset 0 0 8px rgba(232,160,32,.06);transition:box-shadow .18s}
+.r-btn:hover::before{box-shadow:0 0 22px rgba(232,160,32,.75),0 0 40px rgba(232,160,32,.25),inset 0 0 14px rgba(232,160,32,.10)}
+.r-img{width:100%;border-radius:10px;display:block;margin-top:12px;opacity:.95}
+.r-date{font-size:11px;color:var(--muted);margin-bottom:4px}
+
+/* ── NAV ── */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:linear-gradient(to top,rgba(6,8,14,.98) 50%,transparent)}
+.nav-inner{max-width:820px;margin:0 auto;display:flex;justify-content:space-around;align-items:flex-end;padding:10px 20px calc(env(safe-area-inset-bottom,0px) + 10px)}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:0;min-width:52px;transition:color .15s}
+.nav-btn.active,.nav-btn:hover{color:var(--amber2)}
+.nav-btn svg{width:20px;height:20px;stroke:currentColor;display:block}
+.nav-logo-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;transform:translateY(-6px)}
+.nav-logo-btn img{width:52px;height:auto;filter:drop-shadow(0 0 8px rgba(232,160,32,.4));transition:filter .15s}
+.nav-logo-btn:hover img,.nav-logo-btn.active img{filter:drop-shadow(0 0 16px rgba(232,160,32,.75))}
+.nav-logo-btn span{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nav-logo-btn.active span,.nav-logo-btn:hover span{color:var(--amber2)}
+
+@media(max-width:480px){
+  .t5-name{font-size:18px}
+  .t5-pts{font-size:18px}
+  .s-logo{width:110px}
+  .lb-head{flex-direction:column;align-items:flex-start}
+}
+</style>
 </head>
 <body>
-<p class="p1">&lt;!doctype html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1">&lt;meta charset="utf-8"/&gt;</p>
-<p class="p1">&lt;meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/&gt;</p>
-<p class="p1">&lt;title&gt;Survivor 50 · Fantasy League&lt;/title&gt;</p>
-<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&amp;family=Barlow:wght@400;600;700&amp;display=swap" rel="stylesheet"/&gt;</p>
-<p class="p1">&lt;style&gt;</p>
-<p class="p1">*{box-sizing:border-box;margin:0;padding:0}</p>
-<p class="p1">:root{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--bg:#06080e;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--text:#f0ebe0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--muted:#5a5040;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--muted2:#8a7a60;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--amber:#e8a020;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--amber2:#f0c050;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--fire:#c84010;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--warm:#d06020;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--green:#4a9a30;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--nav:66px;</p>
-<p class="p1">}</p>
-<p class="p1">html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden}</p>
-<p class="p1">canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}</p>
-<p class="p1">.ember-wrap{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}</p>
-<p class="p1">.ember{position:absolute;border-radius:999px;animation:floatUp linear infinite;opacity:0}</p>
-<p class="p1">@keyframes floatUp{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>0%{transform:translateY(0) translateX(0);opacity:0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>10%{opacity:.85}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>85%{opacity:.5}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>100%{transform:translateY(-80vh) translateX(var(--drift));opacity:0}</p>
-<p class="p1">}</p>
-<p class="p1">.app{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:16px 14px calc(var(--nav) + 28px)}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── HEADER ── */</p>
-<p class="p1">.s-header{text-align:center;padding:24px 0 18px}</p>
-<p class="p1">.s-logo{width:130px;height:auto;display:block;margin:0 auto 10px;filter:drop-shadow(0 4px 16px rgba(232,160,32,.35))}</p>
-<p class="p1">.s-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--muted2);margin-top:4px}</p>
-<p class="p1">.s-updated{font-size:11px;color:var(--muted);margin-top:6px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── DIVIDER ── */</p>
-<p class="p1">.warm-div{height:1px;background:linear-gradient(90deg,transparent,rgba(200,100,20,.55),rgba(232,160,32,.4),rgba(200,100,20,.55),transparent);margin:16px 0}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── SECTION LABEL ── */</p>
-<p class="p1">.sec-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── TOP 5 ── */</p>
-<p class="p1">.top5{display:grid;gap:1px;margin-bottom:20px}</p>
-<p class="p1">.t5{display:flex;align-items:center;gap:12px;padding:13px 6px;border-bottom:1px solid rgba(255,255,255,.05)}</p>
-<p class="p1">.t5:first-child{border-top:1px solid rgba(255,255,255,.05)}</p>
-<p class="p1">.t5-rank{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--muted2);width:22px;text-align:center;flex:0 0 22px}</p>
-<p class="p1">.t5-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--text);flex:1;letter-spacing:.02em}</p>
-<p class="p1">.t5-delta{font-size:11px;font-weight:700;margin-right:6px;white-space:nowrap}</p>
-<p class="p1">.t5-delta.up{color:#6db86d}</p>
-<p class="p1">.t5-delta.down{color:#c06050}</p>
-<p class="p1">.t5-delta.same{color:var(--muted)}</p>
-<p class="p1">.t5-pts{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--amber)}</p>
-<p class="p1">.t5-pts em{font-size:11px;font-style:normal;color:var(--muted2);margin-left:2px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── CASTAWAY GRID — 3 columns mobile-first ── */</p>
-<p class="p1">.cast-grid{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns:repeat(3,1fr);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap:7px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom:6px;</p>
-<p class="p1">}</p>
-<p class="p1">@media(min-width:500px){.cast-grid{grid-template-columns:repeat(4,1fr)}}</p>
-<p class="p1">@media(min-width:680px){.cast-grid{grid-template-columns:repeat(5,1fr)}}</p>
-<p class="p2"><br></p>
-<p class="p1">.c-box{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding:7px 6px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius:7px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Barlow Condensed',sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size:13px;font-weight:700;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing:.02em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-align:center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:center;gap:4px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height:1.2;</p>
-<p class="p1">}</p>
-<p class="p1">.c-box.alive{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:rgba(232,160,32,.11);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid rgba(232,160,32,.5);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:#f5d070;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow:0 0 7px rgba(232,160,32,.28),inset 0 0 5px rgba(232,160,32,.07);</p>
-<p class="p1">}</p>
-<p class="p1">.c-box.jury{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:rgba(100,180,100,.09);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid rgba(100,180,100,.38);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:#90c878;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow:0 0 7px rgba(100,180,100,.22),inset 0 0 5px rgba(100,180,100,.05);</p>
-<p class="p1">}</p>
-<p class="p1">.c-box.out{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:rgba(255,255,255,.022);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid rgba(255,255,255,.055);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:rgba(120,110,95,.45);</p>
-<p class="p1">}</p>
-<p class="p1">.jury-gavel{display:inline-flex;align-items:center;flex:0 0 auto;opacity:.85;margin-left:1px}</p>
-<p class="p1">.jury-gavel svg{width:13px;height:13px;display:block}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── VIEW MORE ── */</p>
-<p class="p1">.view-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);background:none;border:none;cursor:pointer;padding:0;opacity:.85}</p>
-<p class="p1">.view-more:hover{opacity:1}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── VIEWS ── */</p>
-<p class="p1">.view{display:none;margin-top:4px}</p>
-<p class="p1">.view.active{display:block}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── LEADERBOARD ── */</p>
-<p class="p1">.lb-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px}</p>
-<p class="p1">.lb-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text)}</p>
-<p class="p1">.lb-sub{font-size:12px;color:var(--muted2);margin-bottom:14px}</p>
-<p class="p1">.updated-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(232,160,32,.3);background:rgba(232,160,32,.08);color:var(--amber2);border-radius:999px;padding:5px 12px;font-size:11px;font-weight:700;font-family:'Barlow Condensed',sans-serif;letter-spacing:.05em;white-space:nowrap}</p>
-<p class="p1">.updated-dot{width:6px;height:6px;border-radius:999px;background:var(--amber);box-shadow:0 0 6px var(--amber);flex:0 0 6px}</p>
-<p class="p1">.lb-search{width:100%;border:none;border-bottom:1px solid rgba(255,255,255,.07);background:transparent;color:var(--text);padding:11px 2px;font-size:14px;font-family:'Barlow',sans-serif;outline:none;margin-bottom:18px}</p>
-<p class="p1">.lb-search::placeholder{color:var(--muted)}</p>
-<p class="p2"><br></p>
-<p class="p1">.p-row{border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}</p>
-<p class="p1">.p-row:hover .p-name{color:var(--amber2)}</p>
-<p class="p1">.p-head-row{display:grid;grid-template-columns:28px 1fr auto 20px;align-items:center;gap:10px;padding:13px 4px}</p>
-<p class="p1">.p-rank{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--muted2);text-align:center}</p>
-<p class="p1">.p-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);transition:color .12s;letter-spacing:.02em}</p>
-<p class="p1">.p-meta-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}</p>
-<p class="p1">.p-tag{font-size:10px;color:var(--muted2);background:rgba(255,255,255,.04);border-radius:3px;padding:2px 6px}</p>
-<p class="p1">.p-right{text-align:right}</p>
-<p class="p1">.p-pts{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:900;color:var(--amber)}</p>
-<p class="p1">.p-pts em{font-size:10px;font-style:normal;color:var(--muted2);margin-left:1px}</p>
-<p class="p1">.p-ep-delta{font-size:10px;font-weight:700;margin-top:1px}</p>
-<p class="p1">.p-ep-delta.up{color:#6db86d}</p>
-<p class="p1">.p-ep-delta.down{color:#c06050}</p>
-<p class="p1">.p-ep-delta.same{color:var(--muted)}</p>
-<p class="p1">.p-chev{color:var(--muted);transition:transform .18s;flex:0 0 18px}</p>
-<p class="p1">.p-row.open .p-chev{transform:rotate(180deg)}</p>
-<p class="p1">.p-expand{max-height:0;opacity:0;overflow:hidden;transition:max-height .22s ease,opacity .18s}</p>
-<p class="p1">.p-row.open .p-expand{max-height:520px;opacity:1;padding-bottom:14px}</p>
-<p class="p1">.expand-inner{padding:2px 4px 0}</p>
-<p class="p1">.d-lbl{font-size:9px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;font-weight:700;margin-top:10px}</p>
-<p class="p1">.chip-row{display:flex;flex-wrap:wrap;gap:5px}</p>
-<p class="p1">.chip{font-size:11px;border-radius:5px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px}</p>
-<p class="p1">.chip.tribe{background:rgba(232,160,32,.09);border:1px solid rgba(232,160,32,.28);color:#e8c070}</p>
-<p class="p1">.chip.tribe.out{opacity:.35;text-decoration:line-through;background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);color:var(--muted2)}</p>
-<p class="p1">.chip.win{background:rgba(74,154,48,.10);border:1px solid rgba(74,154,48,.35);color:#80c060}</p>
-<p class="p1">.chip.win.out{opacity:.35;text-decoration:line-through;background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);color:var(--muted2)}</p>
-<p class="p1">.ep-pips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}</p>
-<p class="p1">.ep-pip{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:28px}</p>
-<p class="p1">.ep-pip span:first-child{font-size:8px;color:var(--muted);font-weight:700;font-family:'Barlow Condensed',sans-serif}</p>
-<p class="p1">.ep-pip span:last-child{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:var(--text)}</p>
-<p class="p1">.ep-pip span.zero{color:var(--muted);font-weight:400}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── RESULTS ── */</p>
-<p class="p1">.r-section{padding-top:8px}</p>
-<p class="p1">.r-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}</p>
-<p class="p1">.r-title{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:10px}</p>
-<p class="p1">.r-body{font-size:13px;color:var(--muted2);line-height:1.6;max-width:500px;margin-bottom:18px}</p>
-<p class="p1">.r-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:999px;background:transparent;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber2);text-decoration:none;position:relative;border:none}</p>
-<p class="p1">.r-btn::before{content:'';position:absolute;inset:0;border-radius:999px;border:1.5px solid var(--amber);box-shadow:0 0 10px rgba(232,160,32,.4),inset 0 0 8px rgba(232,160,32,.06);transition:box-shadow .18s}</p>
-<p class="p1">.r-btn:hover::before{box-shadow:0 0 22px rgba(232,160,32,.75),0 0 40px rgba(232,160,32,.25),inset 0 0 14px rgba(232,160,32,.10)}</p>
-<p class="p1">.r-img{width:100%;border-radius:10px;display:block;margin-top:12px;opacity:.95}</p>
-<p class="p1">.r-date{font-size:11px;color:var(--muted);margin-bottom:4px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── NAV ── */</p>
-<p class="p1">.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:linear-gradient(to top,rgba(6,8,14,.98) 50%,transparent)}</p>
-<p class="p1">.nav-inner{max-width:820px;margin:0 auto;display:flex;justify-content:space-around;align-items:flex-end;padding:10px 20px calc(env(safe-area-inset-bottom,0px) + 10px)}</p>
-<p class="p1">.nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:0;min-width:52px;transition:color .15s}</p>
-<p class="p1">.nav-btn.active,.nav-btn:hover{color:var(--amber2)}</p>
-<p class="p1">.nav-btn svg{width:20px;height:20px;stroke:currentColor;display:block}</p>
-<p class="p1">.nav-logo-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;transform:translateY(-6px)}</p>
-<p class="p1">.nav-logo-btn img{width:52px;height:auto;filter:drop-shadow(0 0 8px rgba(232,160,32,.4));transition:filter .15s}</p>
-<p class="p1">.nav-logo-btn:hover img,.nav-logo-btn.active img{filter:drop-shadow(0 0 16px rgba(232,160,32,.75))}</p>
-<p class="p1">.nav-logo-btn span{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}</p>
-<p class="p1">.nav-logo-btn.active span,.nav-logo-btn:hover span{color:var(--amber2)}</p>
-<p class="p2"><br></p>
-<p class="p1">@media(max-width:480px){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.t5-name{font-size:18px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.t5-pts{font-size:18px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.s-logo{width:110px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.lb-head{flex-direction:column;align-items:flex-start}</p>
-<p class="p1">}</p>
-<p class="p1">&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1">&lt;canvas id="bg"&gt;&lt;/canvas&gt;</p>
-<p class="p1">&lt;div class="ember-wrap" id="embers"&gt;&lt;/div&gt;</p>
-<p class="p1">&lt;div class="app"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- HOME --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="view-home" class="view active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="s-header"&gt;</p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- </span>════════════════════════════════════════</p>
-<p class="p1"><span class="Apple-converted-space">           </span>UPDATE YOUR LOGO: replace the src below</p>
-<p class="p1"><span class="Apple-converted-space">           </span>with your own imgur URL, e.g.:</p>
-<p class="p1"><span class="Apple-converted-space">           </span>src="https://i.imgur.com/XXXXXXX.png"</p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">           </span></span>════════════════════════════════════════<span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;img src="https://i.imgur.com/jXZQTQa.png" class="s-logo" alt="Survivor 50"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="s-sub"&gt;Fantasy League · Season 50&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="s-updated" id="updated"&gt;Loading…&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="warm-div"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sec-lbl" style="margin-top:16px"&gt;Top 5 · This Week&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="top5" id="top5"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="view-more" onclick="setView('view-lb')"&gt;Full Standings <span class="s2">→</span>&lt;/button&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="warm-div" style="margin-top:20px"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sec-lbl" style="margin-top:16px"&gt;Castaways&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="cast-grid" id="cast-grid"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- LEADERBOARD --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="view-lb" class="view"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="s-header" style="padding-bottom:12px;text-align:left"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="lb-head"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="lb-title"&gt;Current Standings&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="updated-pill"&gt;&lt;span class="updated-dot"&gt;&lt;/span&gt;Updated post-episode-ish&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="lb-sub"&gt;Season 50 · Fantasy League&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="warm-div"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input class="lb-search" id="search" type="search" placeholder="Search players…" oninput="renderLB()"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="lb-list"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- RESULTS --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="view-results" class="view r-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="s-header" style="padding-bottom:12px;text-align:left"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="r-title"&gt;<span class="s3">🔥</span> Weekly Results&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="warm-div"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="padding-top:18px"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="r-label"&gt;Official source&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--text);margin-bottom:8px"&gt;Global TV Points&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="r-body"&gt;Castaway points are published by Global TV on Thursday nights. Check the link below, then update your Google Sheet — this leaderboard reflects your latest save automatically.&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a class="r-btn" href="https://www.globaltv.com/survivor-50-fantasy-tribe/" target="_blank" rel="noopener"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M14 5h5v5"/&gt;&lt;path d="M10 14L19 5"/&gt;&lt;path d="M19 14v5H5V5h5"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>Global TV Weekly Points</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/a&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="warm-div" style="margin:24px 0 18px"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- </span>════════════════════════════════════════════════════</p>
-<p class="p1"><span class="Apple-converted-space">           </span>THIS WEEK'S SNAPSHOT:</p>
-<p class="p1"><span class="Apple-converted-space">           </span>1. After each episode, go to your imgur account</p>
-<p class="p1"><span class="Apple-converted-space">           </span>2. Upload the screenshot of that week's point totals</p>
-<p class="p1"><span class="Apple-converted-space">           </span>3. Replace the src in the &lt;img&gt; tag below with the</p>
-<p class="p1"><span class="Apple-converted-space">              </span>new imgur URL, e.g.: https://i.imgur.com/XXXXXXX.jpeg</p>
-<p class="p1"><span class="Apple-converted-space">           </span>4. Update the RESULTS_DATE constant at the top of</p>
-<p class="p1"><span class="Apple-converted-space">              </span>the &lt;script&gt; section below</p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">           </span></span>════════════════════════════════════════════════════<span class="s1"> --&gt;</span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="r-label"&gt;<span class="s3">🔥</span> This week's snapshot&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="r-date" id="results-date"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;img id="results-img" class="r-img" src="" alt="Weekly point totals"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;nav class="nav"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="nav-inner"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="nav-btn" id="nav-lb" onclick="setView('view-lb')"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M8 20V10"/&gt;&lt;path d="M12 20V4"/&gt;&lt;path d="M16 20v-7"/&gt;&lt;path d="M5 20h14"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>Standings</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="nav-logo-btn active" id="nav-home" onclick="setView('view-home')"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;img src="https://i.imgur.com/jXZQTQa.png" alt="Home"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;span&gt;Home&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="nav-btn" id="nav-results" onclick="setView('view-results')"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;rect x="5" y="4" width="14" height="16" rx="2"/&gt;&lt;path d="M9 8h6"/&gt;&lt;path d="M9 12h6"/&gt;&lt;path d="M9 16h4"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>Results</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/nav&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p3"><span class="s1">// </span>════════════════════════════════════════════════════</p>
-<p class="p1">// WEEKLY UPDATE AREA — edit these every episode</p>
-<p class="p3"><span class="s1">// </span>════════════════════════════════════════════════════</p>
-<p class="p1">const RESULTS_DATE<span class="Apple-converted-space">  </span>= 'March 15, 2026';</p>
-<p class="p1">const RESULTS_IMAGE = 'https://i.imgur.com/9h4rOmD.jpeg'; // replace with new imgur URL each week</p>
-<p class="p2"><br></p>
-<p class="p3"><span class="s1">// </span>════════════════════════════════════════════════════</p>
-<p class="p1">// CSV URLS — paste your published Google Sheet URLs here</p>
-<p class="p1">// (one-time setup, never needs changing after)</p>
-<p class="p3"><span class="s1">// </span>════════════════════════════════════════════════════</p>
-<p class="p4"><span class="s4">const PICKS_CSV <span class="Apple-converted-space">  </span>= '<a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=917978154&amp;single=true&amp;output=csv"><span class="s5">https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=917978154&amp;single=true&amp;output=csv</span></a>';</span></p>
-<p class="p4"><span class="s4">const POINTS_CSV<span class="Apple-converted-space">  </span>= '<a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1016742147&amp;single=true&amp;output=csv"><span class="s5">https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1016742147&amp;single=true&amp;output=csv</span></a>';</span></p>
-<p class="p4"><span class="s4">const STATUS_CSV<span class="Apple-converted-space">  </span>= '<a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1119897761&amp;single=true&amp;output=csv"><span class="s5">https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1119897761&amp;single=true&amp;output=csv</span></a>';</span></p>
-<p class="p2"><br></p>
-<p class="p1">let players=[],castawayPoints={},statusMap={},episodeCols=[],openPlayer=null;</p>
-<p class="p2"><br></p>
-<p class="p1">function loadMockData(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>players=[</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Donna',tribe:['Joe','Rick','Ozzy','Jonathan','Kamilla','Dee','Aubry','Rizo','Q'],schoolyard:['Colby','Emily']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Jamie',tribe:['Christian','Ozzy','Rick','Charlie','Dee','Jonathan','Aubry','Q','Rizo'],schoolyard:['Charlie','Cirie']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Manpreet',tribe:['Christian','Emily','Savannah','Dee','Jonathan','Kamilla','Colby','Genevieve','Rizo'],schoolyard:['Genevieve','Mike']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Sophie',tribe:['Christian','Emily','Joe','Charlie','Dee','Mike','Aubry','Q','Rizo'],schoolyard:['Stephenie','Angelina']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Calvin',tribe:['Christian','Joe','Savannah','Charlie','Coach','Dee','Aubry','Rizo','Genevieve'],schoolyard:['Chrissy','Tiff']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Giselle',tribe:['Cirie','Ozzy','Savannah','Coach','Mike','Colby','Genevieve','Stephenie','Jenna'],schoolyard:['Jenna','Kamilla']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Kevin',tribe:['Christian','Emily','Savannah','Coach','Dee','Mike','Genevieve','Rizo','Stephenie'],schoolyard:['Dee','Christian']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Doug',tribe:['Cirie','Joe','Ozzy','Charlie','Chrissy','Jonathan','Colby','Q','Rizo'],schoolyard:['Ozzy','Coach']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Christine',tribe:['Christian','Cirie','Rick','Charlie','Jonathan','Kamilla','Aubry','Colby','Rizo'],schoolyard:['Jonathan','Joe']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Ryan',tribe:['Cirie','Joe','Savannah','Charlie','Dee','Jonathan','Aubry','Colby','Stephenie'],schoolyard:['Q','Kyle']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Jordan + Nana&amp;Papa',tribe:['Cirie','Joe','Rick','Dee','Coach','Aubry','Colby','Genevieve','Rick'],schoolyard:['Rick','Savannah']},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>{name:'Denise',tribe:['Christian','Cirie','Joe','Charlie','Kamilla','Tiffany','Genevieve','Q','Stephenie'],schoolyard:['Rizo','Aubry']},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>castawayPoints={</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'christian':{'Ep #2':41,'Ep #3':6},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'joe':{'Ep #2':11,'Ep #3':16},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'rick':{'Ep #2':26,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'ozzy':{'Ep #2':6,'Ep #3':1},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'jonathan':{'Ep #2':21,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'kamilla':{'Ep #2':16,'Ep #3':16},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'dee':{'Ep #2':11,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'aubry':{'Ep #2':21,'Ep #3':16},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'rizo':{'Ep #2':6,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'q':{'Ep #2':21,'Ep #3':15},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'colby':{'Ep #2':6,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'emily':{'Ep #2':6,'Ep #3':6},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'savannah':{'Ep #2':40,'Ep #3':0},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'charlie':{'Ep #2':11,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'coach':{'Ep #2':16,'Ep #3':16},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'genevieve':{'Ep #2':21,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'cirie':{'Ep #2':11,'Ep #3':11},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'mike':{'Ep #2':11,'Ep #3':1},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'stephenie':{'Ep #2':0,'Ep #3':0},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'angelina':{'Ep #2':6,'Ep #3':0},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'jenna':{'Ep #2':0,'Ep #3':0},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'chrissy':{'Ep #2':11,'Ep #3':16},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'tiff':{'Ep #2':0,'Ep #3':0},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'tiffany':{'Ep #2':0,'Ep #3':0},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'kyle':{'Ep #2':0,'Ep #3':0},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>episodeCols=['Ep #2','Ep #3'];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>statusMap={</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'angelina':{name:'Angelina',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'aubry':{name:'Aubry',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'charlie':{name:'Charlie',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'chrissy':{name:'Chrissy',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'christian':{name:'Christian',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'cirie':{name:'Cirie',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'coach':{name:'Coach',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'colby':{name:'Colby',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'dee':{name:'Dee',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'emily':{name:'Emily',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'genevieve':{name:'Genevieve',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'jenna':{name:'Jenna',active:false,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'joe':{name:'Joe',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'jonathan':{name:'Jonathan',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'kamilla':{name:'Kamilla',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'kyle':{name:'Kyle',active:false,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'mike':{name:'Mike',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'ozzy':{name:'Ozzy',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'q':{name:'Q',active:false,jury:true},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'rick':{name:'Rick',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'rizo':{name:'Rizo',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'savannah':{name:'Savannah',active:false,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'stephenie':{name:'Stephenie',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">    </span>'tiffany':{name:'Tiffany',active:true,jury:false},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('updated').textContent='Preview — mock data';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">async function init(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(PICKS_CSV==='YOUR_PICKS_CSV_URL'){loadMockData();return}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('updated').textContent='Loading…';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const [p,pt,s]=await Promise.all([fetchCSV(PICKS_CSV),fetchCSV(POINTS_CSV),fetchCSV(STATUS_CSV)]);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>parsePicks(p);parsePoints(pt);parseStatus(s);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>renderAll();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('updated').textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){document.getElementById('updated').textContent='<span class="s6">⚠</span> Error loading data'}</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">async function fetchCSV(url){const r=await fetch(url);if(!r.ok)throw new Error();return r.text()}</p>
-<p class="p1">function parseCSV(t){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return t.trim().split('\n').map(row=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const c=[];let cur='',q=false;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>for(const ch of row){if(ch==='"'){q=!q}else if(ch===','&amp;&amp;!q){c.push(cur.trim());cur=''}else cur+=ch}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>c.push(cur.trim());return c;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p1">function parsePicks(t){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const rows=parseCSV(t);if(!rows.length)return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const hdr=rows[0];players=[];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>rows.slice(1).forEach(row=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const name=(row[0]||'').trim();if(!name)return;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const tribe=[],schoolyard=[];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>hdr.forEach((h,i)=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const v=(row[i]||'').trim();if(!v)return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(/^Tribe\s*\d+$/i.test(h))tribe.push(v);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>else if(/^Schoolyard\s*\d+$/i.test(h))schoolyard.push(v);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>players.push({name,tribe,schoolyard});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p1">function parsePoints(t){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const rows=parseCSV(t);if(!rows.length)return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const hdr=rows[0].map(h=&gt;h.trim());</p>
-<p class="p1"><span class="Apple-converted-space">  </span>episodeCols=hdr.slice(1).filter(h=&gt;/^Ep\s*#?\d+/i.test(h));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>castawayPoints={};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>rows.slice(1).forEach(row=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const c=(row[0]||'').trim();if(!c)return;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const eps={};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>hdr.forEach((h,i)=&gt;{if(/^Ep\s*#?\d+/i.test(h)){const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v}});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>castawayPoints[c.toLowerCase()]=eps;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p1">function parseStatus(t){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>statusMap={};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>parseCSV(t).slice(1).forEach(row=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const n=(row[0]||'').trim();if(!n)return;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>statusMap[n.toLowerCase()]={name:n,active:/^active$/i.test((row[1]||'').trim()),jury:/^yes$/i.test((row[2]||'').trim())};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">const GAVEL=`&lt;span class="jury-gavel"&gt;<span class="s3">⚖️</span>&lt;/span&gt;`;</p>
-<p class="p1">function allCasts(p){return[...(p.tribe||[]),...(p.schoolyard||[])]}</p>
-<p class="p1">function playerTotal(p){return allCasts(p).reduce((s,c)=&gt;{const e=castawayPoints[c.toLowerCase()]||{};return s+Object.values(e).reduce((a,b)=&gt;a+b,0)},0)}</p>
-<p class="p1">function playerEp(p,ep){return allCasts(p).reduce((s,c)=&gt;(s+((castawayPoints[c.toLowerCase()]||{})[ep]||0)),0)}</p>
-<p class="p1">function getSorted(){return[...players].map(p=&gt;({...p,total:playerTotal(p)})).sort((a,b)=&gt;b.total-a.total)}</p>
-<p class="p1">function getLastEpDelta(p){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!episodeCols.length)return null;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return Math.round(playerEp(p,episodeCols[episodeCols.length-1]));</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderAll(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderHome();renderLB();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('results-date').textContent='Last updated: '+RESULTS_DATE;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('results-img').src=RESULTS_IMAGE;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderHome(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const sorted=getSorted();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const medals=['<span class="s3">🥇</span>','<span class="s3">🥈</span>','<span class="s3">🥉</span>'];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('top5').innerHTML=sorted.slice(0,5).map((p,i)=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const delta=getLastEpDelta(p);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let dHtml='';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(delta!==null){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(delta&gt;0)dHtml=`&lt;span class="t5-delta up"&gt;<span class="s7">▲</span> +${delta}&lt;/span&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>else if(delta&lt;0)dHtml=`&lt;span class="t5-delta down"&gt;<span class="s2">▼</span> ${delta}&lt;/span&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>else dHtml=`&lt;span class="t5-delta same"&gt;—&lt;/span&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;div class="t5"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="t5-rank"&gt;${i&lt;3?medals[i]:i+1}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="t5-name"&gt;${esc(p.name)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>${dHtml}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="t5-pts"&gt;${p.total}&lt;em&gt;pts&lt;/em&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>// shuffled castaway grid</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const all=Object.values(statusMap);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const shuffled=[...all].sort(()=&gt;Math.random()-.5);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('cast-grid').innerHTML=shuffled.map(s=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let cls='c-box out';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(s.active&amp;&amp;s.jury) cls='c-box jury';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>else if(s.active) cls='c-box alive';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const gavel=s.jury?GAVEL:'';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;div class="${cls}"&gt;${esc(s.name)}${gavel}&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderLB(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const q=(document.getElementById('search')?.value||'').toLowerCase().trim();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const sorted=getSorted();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('lb-list').innerHTML=sorted.filter(p=&gt;!q||p.name.toLowerCase().includes(q)).map(p=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const rank=sorted.indexOf(p)+1;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const delta=getLastEpDelta(p);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let dHtml='';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(delta!==null){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(delta&gt;0)dHtml=`&lt;div class="p-ep-delta up"&gt;<span class="s7">▲</span> +${delta} this ep&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>else if(delta&lt;0)dHtml=`&lt;div class="p-ep-delta down"&gt;<span class="s2">▼</span> ${delta} this ep&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>else dHtml=`&lt;div class="p-ep-delta same"&gt;— 0 this ep&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const tAlive=(p.tribe||[]).filter(c=&gt;statusMap[c.toLowerCase()]?.active!==false).length;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const sAlive=(p.schoolyard||[]).filter(c=&gt;statusMap[c.toLowerCase()]?.active!==false).length;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const isOpen=openPlayer===p.name;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;div class="p-row${isOpen?' open':''}" onclick="toggle('${esc(p.name)}')"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-head-row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-rank"&gt;${rank}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-name"&gt;${esc(p.name)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-meta-tags"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="p-tag"&gt;Tribe ${tAlive}/${(p.tribe||[]).length} alive&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="p-tag"&gt;Picks ${sAlive}/${(p.schoolyard||[]).length} alive&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-right"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-pts"&gt;${p.total}&lt;em&gt;pts&lt;/em&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>${dHtml}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg class="p-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M6 9l6 6 6-6"/&gt;&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-expand"&gt;&lt;div class="expand-inner"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-lbl"&gt;Schoolyard picks&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="chip-row"&gt;${chipList(p.schoolyard||[],'win')}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-lbl"&gt;Fantasy tribe&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="chip-row"&gt;${chipList(p.tribe||[],'tribe')}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>${episodeCols.length?`&lt;div class="d-lbl"&gt;Points by episode&lt;/div&gt;&lt;div class="ep-pips"&gt;${epPips(p)}&lt;/div&gt;`:''}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function toggle(name){openPlayer=openPlayer===name?null:name;renderLB()}</p>
-<p class="p1">function chipList(arr,cls){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!arr.length)return`&lt;span class="chip tribe" style="color:var(--muted)"&gt;—&lt;/span&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return arr.map(c=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const info=statusMap[c.toLowerCase()];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const out=info&amp;&amp;!info.active;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const gavel=info?.jury?GAVEL:'';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;span class="chip ${cls}${out?' out':''}"&gt;${esc(c)}${gavel}&lt;/span&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
-<p class="p1">}</p>
-<p class="p1">function epPips(p){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return episodeCols.map(ep=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const v=playerEp(p,ep);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;div class="ep-pip"&gt;&lt;span&gt;${ep.replace(/[^0-9]/g,'')}&lt;/span&gt;&lt;span class="${v===0?'zero':''}"&gt;${v}&lt;/span&gt;&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function setView(id){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.view').forEach(v=&gt;v.classList.toggle('active',v.id===id));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const map={'view-lb':'nav-lb','view-home':'nav-home','view-results':'nav-results'};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>Object.entries(map).forEach(([v,n])=&gt;document.getElementById(n)?.classList.toggle('active',v===id));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>window.scrollTo({top:0,behavior:'smooth'});</p>
-<p class="p1">}</p>
-<p class="p1">function esc(s){return String(s).replace(/[&amp;&lt;&gt;"']/g,c=&gt;({'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','"':'&amp;quot;',"'":'&amp;#39;'}[c]))}</p>
-<p class="p2"><br></p>
-<p class="p1">// slow round embers</p>
-<p class="p1">(function(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const wrap=document.getElementById('embers');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>for(let i=0;i&lt;30;i++){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const e=document.createElement('div');e.className='ember';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const h=5+Math.random()*28;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const size=2+Math.random()*3.5; // small and round</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const drift=(Math.random()*30-15)+'px';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>e.style.cssText=[</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`left:${Math.random()*100}%`,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`bottom:${Math.random()*20}%`,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`width:${size}px`,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`height:${size}px`, // equal width/height = circle</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`background:hsl(${h},95%,${58+Math.random()*18}%)`,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`box-shadow:0 0 4px hsl(${h},95%,65%)`,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`--drift:${drift}`,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`animation-duration:${10+Math.random()*10}s`,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`animation-delay:${Math.random()*6}s`</p>
-<p class="p1"><span class="Apple-converted-space">    </span>].join(';');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>wrap.appendChild(e);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">})();</p>
-<p class="p2"><br></p>
-<p class="p1">// subtle bg glow</p>
-<p class="p1">(function(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const cv=document.getElementById('bg'),ctx=cv.getContext('2d');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>let W,H;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>resize();window.addEventListener('resize',resize);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>let t=0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>(function draw(){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>ctx.clearRect(0,0,W,H);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const g=ctx.createRadialGradient(W*.5,H,0,W*.5,H,W*.65);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>g.addColorStop(0,`hsla(25,80%,28%,${.06+.025*Math.sin(t*.003)})`);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>g.addColorStop(1,'transparent');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>ctx.fillStyle=g;ctx.fillRect(0,0,W,H);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>t++;requestAnimationFrame(draw);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>})();</p>
-<p class="p1">})();</p>
-<p class="p2"><br></p>
-<p class="p1">document.addEventListener('DOMContentLoaded',()=&gt;{setView('view-home');init()});</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<canvas id="bg"></canvas>
+<div class="ember-wrap" id="embers"></div>
+<div class="app">
+
+  <!-- HOME -->
+  <section id="view-home" class="view active">
+    <div class="s-header">
+      <!-- ════════════════════════════════════════
+           UPDATE YOUR LOGO: replace the src below
+           with your own imgur URL, e.g.:
+           src="https://i.imgur.com/XXXXXXX.png"
+           ════════════════════════════════════════ -->
+      <img src="https://i.imgur.com/jXZQTQa.png" class="s-logo" alt="Survivor 50"/>
+      <div class="s-sub">Fantasy League · Season 50</div>
+      <div class="s-updated" id="updated">Loading…</div>
+    </div>
+
+    <div class="warm-div"></div>
+    <div class="sec-lbl" style="margin-top:16px">Top 5 · This Week</div>
+    <div class="top5" id="top5"></div>
+    <button class="view-more" onclick="setView('view-lb')">Full Standings →</button>
+
+    <div class="warm-div" style="margin-top:20px"></div>
+    <div class="sec-lbl" style="margin-top:16px">Castaways</div>
+    <div class="cast-grid" id="cast-grid"></div>
+  </section>
+
+  <!-- LEADERBOARD -->
+  <section id="view-lb" class="view">
+    <div class="s-header" style="padding-bottom:12px;text-align:left">
+      <div class="lb-head">
+        <div class="lb-title">Current Standings</div>
+        <div class="updated-pill"><span class="updated-dot"></span>Updated post-episode-ish</div>
+      </div>
+      <div class="lb-sub">Season 50 · Fantasy League</div>
+    </div>
+    <div class="warm-div"></div>
+    <input class="lb-search" id="search" type="search" placeholder="Search players…" oninput="renderLB()"/>
+    <div id="lb-list"></div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="view-results" class="view r-section">
+    <div class="s-header" style="padding-bottom:12px;text-align:left">
+      <div class="r-title">🔥 Weekly Results</div>
+    </div>
+    <div class="warm-div"></div>
+    <div style="padding-top:18px">
+      <div class="r-label">Official source</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--text);margin-bottom:8px">Global TV Points</div>
+      <div class="r-body">Castaway points are published by Global TV on Thursday nights. Check the link below, then update your Google Sheet — this leaderboard reflects your latest save automatically.</div>
+      <a class="r-btn" href="https://www.globaltv.com/survivor-50-fantasy-tribe/" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5h5v5"/><path d="M10 14L19 5"/><path d="M19 14v5H5V5h5"/></svg>
+        Global TV Weekly Points
+      </a>
+
+      <div class="warm-div" style="margin:24px 0 18px"></div>
+
+      <!-- ════════════════════════════════════════════════════
+           THIS WEEK'S SNAPSHOT:
+           1. After each episode, go to your imgur account
+           2. Upload the screenshot of that week's point totals
+           3. Replace the src in the <img> tag below with the
+              new imgur URL, e.g.: https://i.imgur.com/XXXXXXX.jpeg
+           4. Update the RESULTS_DATE constant at the top of
+              the <script> section below
+           ════════════════════════════════════════════════════ -->
+      <div class="r-label">🔥 This week's snapshot</div>
+      <div class="r-date" id="results-date"></div>
+      <img id="results-img" class="r-img" src="" alt="Weekly point totals"/>
+    </div>
+  </section>
+
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn" id="nav-lb" onclick="setView('view-lb')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V10"/><path d="M12 20V4"/><path d="M16 20v-7"/><path d="M5 20h14"/></svg>
+      Standings
+    </button>
+    <button class="nav-logo-btn active" id="nav-home" onclick="setView('view-home')">
+      <img src="https://i.imgur.com/jXZQTQa.png" alt="Home"/>
+      <span>Home</span>
+    </button>
+    <button class="nav-btn" id="nav-results" onclick="setView('view-results')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+      Results
+    </button>
+  </div>
+</nav>
+
+<script>
+// ════════════════════════════════════════════════════
+// WEEKLY UPDATE AREA — edit these every episode
+// ════════════════════════════════════════════════════
+const RESULTS_DATE  = 'March 15, 2026';
+const RESULTS_IMAGE = 'https://i.imgur.com/9h4rOmD.jpeg'; // replace with new imgur URL each week
+
+// ════════════════════════════════════════════════════
+// CSV URLS — paste your published Google Sheet URLs here
+// (one-time setup, never needs changing after)
+// ════════════════════════════════════════════════════
+const PICKS_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=917978154&single=true&output=csv';
+const POINTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1016742147&single=true&output=csv';
+const STATUS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1119897761&single=true&output=csv';
+
+let players=[],castawayPoints={},statusMap={},episodeCols=[],openPlayer=null;
+
+function loadMockData(){
+  players=[
+    {name:'Donna',tribe:['Joe','Rick','Ozzy','Jonathan','Kamilla','Dee','Aubry','Rizo','Q'],schoolyard:['Colby','Emily']},
+    {name:'Jamie',tribe:['Christian','Ozzy','Rick','Charlie','Dee','Jonathan','Aubry','Q','Rizo'],schoolyard:['Charlie','Cirie']},
+    {name:'Manpreet',tribe:['Christian','Emily','Savannah','Dee','Jonathan','Kamilla','Colby','Genevieve','Rizo'],schoolyard:['Genevieve','Mike']},
+    {name:'Sophie',tribe:['Christian','Emily','Joe','Charlie','Dee','Mike','Aubry','Q','Rizo'],schoolyard:['Stephenie','Angelina']},
+    {name:'Calvin',tribe:['Christian','Joe','Savannah','Charlie','Coach','Dee','Aubry','Rizo','Genevieve'],schoolyard:['Chrissy','Tiff']},
+    {name:'Giselle',tribe:['Cirie','Ozzy','Savannah','Coach','Mike','Colby','Genevieve','Stephenie','Jenna'],schoolyard:['Jenna','Kamilla']},
+    {name:'Kevin',tribe:['Christian','Emily','Savannah','Coach','Dee','Mike','Genevieve','Rizo','Stephenie'],schoolyard:['Dee','Christian']},
+    {name:'Doug',tribe:['Cirie','Joe','Ozzy','Charlie','Chrissy','Jonathan','Colby','Q','Rizo'],schoolyard:['Ozzy','Coach']},
+    {name:'Christine',tribe:['Christian','Cirie','Rick','Charlie','Jonathan','Kamilla','Aubry','Colby','Rizo'],schoolyard:['Jonathan','Joe']},
+    {name:'Ryan',tribe:['Cirie','Joe','Savannah','Charlie','Dee','Jonathan','Aubry','Colby','Stephenie'],schoolyard:['Q','Kyle']},
+    {name:'Jordan + Nana&Papa',tribe:['Cirie','Joe','Rick','Dee','Coach','Aubry','Colby','Genevieve','Rick'],schoolyard:['Rick','Savannah']},
+    {name:'Denise',tribe:['Christian','Cirie','Joe','Charlie','Kamilla','Tiffany','Genevieve','Q','Stephenie'],schoolyard:['Rizo','Aubry']},
+  ];
+  castawayPoints={
+    'christian':{'Ep #2':41,'Ep #3':6},
+    'joe':{'Ep #2':11,'Ep #3':16},
+    'rick':{'Ep #2':26,'Ep #3':11},
+    'ozzy':{'Ep #2':6,'Ep #3':1},
+    'jonathan':{'Ep #2':21,'Ep #3':11},
+    'kamilla':{'Ep #2':16,'Ep #3':16},
+    'dee':{'Ep #2':11,'Ep #3':11},
+    'aubry':{'Ep #2':21,'Ep #3':16},
+    'rizo':{'Ep #2':6,'Ep #3':11},
+    'q':{'Ep #2':21,'Ep #3':15},
+    'colby':{'Ep #2':6,'Ep #3':11},
+    'emily':{'Ep #2':6,'Ep #3':6},
+    'savannah':{'Ep #2':40,'Ep #3':0},
+    'charlie':{'Ep #2':11,'Ep #3':11},
+    'coach':{'Ep #2':16,'Ep #3':16},
+    'genevieve':{'Ep #2':21,'Ep #3':11},
+    'cirie':{'Ep #2':11,'Ep #3':11},
+    'mike':{'Ep #2':11,'Ep #3':1},
+    'stephenie':{'Ep #2':0,'Ep #3':0},
+    'angelina':{'Ep #2':6,'Ep #3':0},
+    'jenna':{'Ep #2':0,'Ep #3':0},
+    'chrissy':{'Ep #2':11,'Ep #3':16},
+    'tiff':{'Ep #2':0,'Ep #3':0},
+    'tiffany':{'Ep #2':0,'Ep #3':0},
+    'kyle':{'Ep #2':0,'Ep #3':0},
+  };
+  episodeCols=['Ep #2','Ep #3'];
+  statusMap={
+    'angelina':{name:'Angelina',active:true,jury:false},
+    'aubry':{name:'Aubry',active:true,jury:false},
+    'charlie':{name:'Charlie',active:true,jury:false},
+    'chrissy':{name:'Chrissy',active:true,jury:false},
+    'christian':{name:'Christian',active:true,jury:false},
+    'cirie':{name:'Cirie',active:true,jury:false},
+    'coach':{name:'Coach',active:true,jury:false},
+    'colby':{name:'Colby',active:true,jury:false},
+    'dee':{name:'Dee',active:true,jury:false},
+    'emily':{name:'Emily',active:true,jury:false},
+    'genevieve':{name:'Genevieve',active:true,jury:false},
+    'jenna':{name:'Jenna',active:false,jury:false},
+    'joe':{name:'Joe',active:true,jury:false},
+    'jonathan':{name:'Jonathan',active:true,jury:false},
+    'kamilla':{name:'Kamilla',active:true,jury:false},
+    'kyle':{name:'Kyle',active:false,jury:false},
+    'mike':{name:'Mike',active:true,jury:false},
+    'ozzy':{name:'Ozzy',active:true,jury:false},
+    'q':{name:'Q',active:false,jury:true},
+    'rick':{name:'Rick',active:true,jury:false},
+    'rizo':{name:'Rizo',active:true,jury:false},
+    'savannah':{name:'Savannah',active:false,jury:false},
+    'stephenie':{name:'Stephenie',active:true,jury:false},
+    'tiffany':{name:'Tiffany',active:true,jury:false},
+  };
+  document.getElementById('updated').textContent='Preview — mock data';
+  renderAll();
+}
+
+async function init(){
+  if(PICKS_CSV==='YOUR_PICKS_CSV_URL'){loadMockData();return}
+  document.getElementById('updated').textContent='Loading…';
+  try{
+    const [p,pt,s]=await Promise.all([fetchCSV(PICKS_CSV),fetchCSV(POINTS_CSV),fetchCSV(STATUS_CSV)]);
+    parsePicks(p);parsePoints(pt);parseStatus(s);
+    renderAll();
+    document.getElementById('updated').textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  }catch(e){document.getElementById('updated').textContent='⚠ Error loading data'}
+}
+
+async function fetchCSV(url){const r=await fetch(url);if(!r.ok)throw new Error();return r.text()}
+function parseCSV(t){
+  return t.trim().split('\n').map(row=>{
+    const c=[];let cur='',q=false;
+    for(const ch of row){if(ch==='"'){q=!q}else if(ch===','&&!q){c.push(cur.trim());cur=''}else cur+=ch}
+    c.push(cur.trim());return c;
+  });
+}
+function parsePicks(t){
+  const rows=parseCSV(t);if(!rows.length)return;
+  const hdr=rows[0];players=[];
+  rows.slice(1).forEach(row=>{
+    const name=(row[0]||'').trim();if(!name)return;
+    const tribe=[],schoolyard=[];
+    hdr.forEach((h,i)=>{
+      const v=(row[i]||'').trim();if(!v)return;
+      if(/^Tribe\s*\d+$/i.test(h))tribe.push(v);
+      else if(/^Schoolyard\s*\d+$/i.test(h))schoolyard.push(v);
+    });
+    players.push({name,tribe,schoolyard});
+  });
+}
+function parsePoints(t){
+  const rows=parseCSV(t);if(!rows.length)return;
+  const hdr=rows[0].map(h=>h.trim());
+  episodeCols=hdr.slice(1).filter(h=>/^Ep\s*#?\d+/i.test(h));
+  castawayPoints={};
+  rows.slice(1).forEach(row=>{
+    const c=(row[0]||'').trim();if(!c)return;
+    const eps={};
+    hdr.forEach((h,i)=>{if(/^Ep\s*#?\d+/i.test(h)){const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v}});
+    castawayPoints[c.toLowerCase()]=eps;
+  });
+}
+function parseStatus(t){
+  statusMap={};
+  parseCSV(t).slice(1).forEach(row=>{
+    const n=(row[0]||'').trim();if(!n)return;
+    statusMap[n.toLowerCase()]={name:n,active:/^active$/i.test((row[1]||'').trim()),jury:/^yes$/i.test((row[2]||'').trim())};
+  });
+}
+
+const GAVEL=`<span class="jury-gavel">⚖️</span>`;
+function allCasts(p){return[...(p.tribe||[]),...(p.schoolyard||[])]}
+function playerTotal(p){return allCasts(p).reduce((s,c)=>{const e=castawayPoints[c.toLowerCase()]||{};return s+Object.values(e).reduce((a,b)=>a+b,0)},0)}
+function playerEp(p,ep){return allCasts(p).reduce((s,c)=>(s+((castawayPoints[c.toLowerCase()]||{})[ep]||0)),0)}
+function getSorted(){return[...players].map(p=>({...p,total:playerTotal(p)})).sort((a,b)=>b.total-a.total)}
+function getLastEpDelta(p){
+  if(!episodeCols.length)return null;
+  return Math.round(playerEp(p,episodeCols[episodeCols.length-1]));
+}
+
+function renderAll(){
+  renderHome();renderLB();
+  document.getElementById('results-date').textContent='Last updated: '+RESULTS_DATE;
+  document.getElementById('results-img').src=RESULTS_IMAGE;
+}
+
+function renderHome(){
+  const sorted=getSorted();
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('top5').innerHTML=sorted.slice(0,5).map((p,i)=>{
+    const delta=getLastEpDelta(p);
+    let dHtml='';
+    if(delta!==null){
+      if(delta>0)dHtml=`<span class="t5-delta up">▲ +${delta}</span>`;
+      else if(delta<0)dHtml=`<span class="t5-delta down">▼ ${delta}</span>`;
+      else dHtml=`<span class="t5-delta same">—</span>`;
+    }
+    return`<div class="t5">
+      <div class="t5-rank">${i<3?medals[i]:i+1}</div>
+      <div class="t5-name">${esc(p.name)}</div>
+      ${dHtml}
+      <div class="t5-pts">${p.total}<em>pts</em></div>
+    </div>`;
+  }).join('');
+
+  // shuffled castaway grid
+  const all=Object.values(statusMap);
+  const shuffled=[...all].sort(()=>Math.random()-.5);
+  document.getElementById('cast-grid').innerHTML=shuffled.map(s=>{
+    let cls='c-box out';
+    if(s.active&&s.jury) cls='c-box jury';
+    else if(s.active) cls='c-box alive';
+    const gavel=s.jury?GAVEL:'';
+    return`<div class="${cls}">${esc(s.name)}${gavel}</div>`;
+  }).join('');
+}
+
+function renderLB(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
+  const sorted=getSorted();
+  document.getElementById('lb-list').innerHTML=sorted.filter(p=>!q||p.name.toLowerCase().includes(q)).map(p=>{
+    const rank=sorted.indexOf(p)+1;
+    const delta=getLastEpDelta(p);
+    let dHtml='';
+    if(delta!==null){
+      if(delta>0)dHtml=`<div class="p-ep-delta up">▲ +${delta} this ep</div>`;
+      else if(delta<0)dHtml=`<div class="p-ep-delta down">▼ ${delta} this ep</div>`;
+      else dHtml=`<div class="p-ep-delta same">— 0 this ep</div>`;
+    }
+    const tAlive=(p.tribe||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
+    const sAlive=(p.schoolyard||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
+    const isOpen=openPlayer===p.name;
+    return`<div class="p-row${isOpen?' open':''}" onclick="toggle('${esc(p.name)}')">
+      <div class="p-head-row">
+        <div class="p-rank">${rank}</div>
+        <div>
+          <div class="p-name">${esc(p.name)}</div>
+          <div class="p-meta-tags">
+            <span class="p-tag">Tribe ${tAlive}/${(p.tribe||[]).length} alive</span>
+            <span class="p-tag">Picks ${sAlive}/${(p.schoolyard||[]).length} alive</span>
+          </div>
+        </div>
+        <div class="p-right">
+          <div class="p-pts">${p.total}<em>pts</em></div>
+          ${dHtml}
+        </div>
+        <svg class="p-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="p-expand"><div class="expand-inner">
+        <div class="d-lbl">Schoolyard picks</div>
+        <div class="chip-row">${chipList(p.schoolyard||[],'win')}</div>
+        <div class="d-lbl">Fantasy tribe</div>
+        <div class="chip-row">${chipList(p.tribe||[],'tribe')}</div>
+        ${episodeCols.length?`<div class="d-lbl">Points by episode</div><div class="ep-pips">${epPips(p)}</div>`:''}
+      </div></div>
+    </div>`;
+  }).join('');
+}
+
+function toggle(name){openPlayer=openPlayer===name?null:name;renderLB()}
+function chipList(arr,cls){
+  if(!arr.length)return`<span class="chip tribe" style="color:var(--muted)">—</span>`;
+  return arr.map(c=>{
+    const info=statusMap[c.toLowerCase()];
+    const out=info&&!info.active;
+    const gavel=info?.jury?GAVEL:'';
+    return`<span class="chip ${cls}${out?' out':''}">${esc(c)}${gavel}</span>`;
+  }).join('');
+}
+function epPips(p){
+  return episodeCols.map(ep=>{
+    const v=playerEp(p,ep);
+    return`<div class="ep-pip"><span>${ep.replace(/[^0-9]/g,'')}</span><span class="${v===0?'zero':''}">${v}</span></div>`;
+  }).join('');
+}
+
+function setView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+  const map={'view-lb':'nav-lb','view-home':'nav-home','view-results':'nav-results'};
+  Object.entries(map).forEach(([v,n])=>document.getElementById(n)?.classList.toggle('active',v===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+// slow round embers
+(function(){
+  const wrap=document.getElementById('embers');
+  for(let i=0;i<30;i++){
+    const e=document.createElement('div');e.className='ember';
+    const h=5+Math.random()*28;
+    const size=2+Math.random()*3.5; // small and round
+    const drift=(Math.random()*30-15)+'px';
+    e.style.cssText=[
+      `left:${Math.random()*100}%`,
+      `bottom:${Math.random()*20}%`,
+      `width:${size}px`,
+      `height:${size}px`, // equal width/height = circle
+      `background:hsl(${h},95%,${58+Math.random()*18}%)`,
+      `box-shadow:0 0 4px hsl(${h},95%,65%)`,
+      `--drift:${drift}`,
+      `animation-duration:${10+Math.random()*10}s`,
+      `animation-delay:${Math.random()*6}s`
+    ].join(';');
+    wrap.appendChild(e);
+  }
+})();
+
+// subtle bg glow
+(function(){
+  const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
+  let W,H;
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  let t=0;
+  (function draw(){
+    ctx.clearRect(0,0,W,H);
+    const g=ctx.createRadialGradient(W*.5,H,0,W*.5,H,W*.65);
+    g.addColorStop(0,`hsla(25,80%,28%,${.06+.025*Math.sin(t*.003)})`);
+    g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    t++;requestAnimationFrame(draw);
+  })();
+})();
+
+document.addEventListener('DOMContentLoaded',()=>{setView('view-home');init()});
+</script>
 </body>
 </html>
