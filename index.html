@@ -274,12 +274,8 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 // WEEKLY UPDATE AREA — edit these every episode
 // ════════════════════════════════════════════════════
 const RESULTS_DATE  = 'March 20, 2026';
-const RESULTS_IMAGE = 'https://i.imgur.com/GCtKBHb.jpeg'; // replace with new imgur URL each week
+const RESULTS_IMAGE = 'https://i.imgur.com/GCtKBHb.jpeg';
 
-// ════════════════════════════════════════════════════
-// CSV URLS — paste your published Google Sheet URLs here
-// (one-time setup, never needs changing after)
-// ════════════════════════════════════════════════════
 const PICKS_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=917978154&single=true&output=csv';
 const POINTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1016742147&single=true&output=csv';
 const STATUS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1119897761&single=true&output=csv';
@@ -395,12 +391,18 @@ function parsePicks(t){
 function parsePoints(t){
   const rows=parseCSV(t);if(!rows.length)return;
   const hdr=rows[0].map(h=>h.trim());
-  episodeCols=hdr.slice(1).filter(h=>/^Ep\s*#?\d+/i.test(h));
+  const dataRows=rows.slice(1).filter(r=>(r[0]||'').trim());
+
+  // only keep episode columns that have at least one non-zero value
+  const allEpCols=hdr.reduce((acc,h,i)=>{if(/^Ep\s*#?\d+/i.test(h))acc.push({h,i});return acc;},[]);
+  const populatedEpCols=allEpCols.filter(({i})=>dataRows.some(r=>{const v=parseFloat(r[i]);return!isNaN(v)&&v!==0}));
+  episodeCols=populatedEpCols.map(({h})=>h);
+
   castawayPoints={};
-  rows.slice(1).forEach(row=>{
+  dataRows.forEach(row=>{
     const c=(row[0]||'').trim();if(!c)return;
     const eps={};
-    hdr.forEach((h,i)=>{if(/^Ep\s*#?\d+/i.test(h)){const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v}});
+    populatedEpCols.forEach(({h,i})=>{const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v});
     castawayPoints[c.toLowerCase()]=eps;
   });
 }
@@ -437,7 +439,7 @@ function renderHome(){
     if(delta!==null){
       if(delta>0)dHtml=`<span class="t5-delta up">▲ +${delta}</span>`;
       else if(delta<0)dHtml=`<span class="t5-delta down">▼ ${delta}</span>`;
-      else dHtml=`<span class="t5-delta same">—</span>`;
+      else dHtml=`<span class="t5-delta same">— 0 pts</span>`;
     }
     return`<div class="t5">
       <div class="t5-rank">${i<3?medals[i]:i+1}</div>
