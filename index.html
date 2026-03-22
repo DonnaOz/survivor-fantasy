@@ -413,17 +413,19 @@ function getSorted(){
 
 function getPlacementDelta(playerName,sortedNow){
   if(episodeCols.length<2)return null;
-  // Previous = all episodes except the most recent one
   const prevEps=episodeCols.slice(0,-1);
   const prevSorted=players
     .map(p=>({name:p.name,total:castTotal(p,prevEps)}))
     .sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
-  // Current sorted with same tiebreaker
   const currSorted=[...sortedNow].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
   const prevRank=prevSorted.findIndex(p=>p.name===playerName)+1;
   const currRank=currSorted.findIndex(p=>p.name===playerName)+1;
   if(!prevRank||!currRank)return null;
-  return prevRank-currRank; // positive=moved up, negative=moved down
+  // Debug — remove after confirming fix
+  if(['Donna','Calvin','Jordan + Nana&Papa','Giselle'].includes(playerName)){
+    console.log(`${playerName}: prev=${prevRank} curr=${currRank} move=${prevRank-currRank} | prevTotal=${prevSorted.find(p=>p.name===playerName)?.total} currTotal=${currSorted.find(p=>p.name===playerName)?.total} | prevEps=${prevEps.join(',')} allEps=${episodeCols.join(',')}`);
+  }
+  return prevRank-currRank;
 }
 
 function moveTxt(move,cls){
