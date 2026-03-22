@@ -8,51 +8,34 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#06080e;
-  --text:#f0ebe0;
-  --muted:#5a5040;
-  --muted2:#8a7a60;
-  --amber:#e8a020;
-  --amber2:#f0c050;
-  --nav-h:64px;
-  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#06080e;--text:#f0ebe0;--muted:#5a5040;--muted2:#8a7a60;
+  --amber:#e8a020;--amber2:#f0c050;
+  --nav-h:70px;--nav-bg:#0d0f18;
 }
-html,body{min-height:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;overscroll-behavior-y:none}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;overscroll-behavior-y:none}
 canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .ember-wrap{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
 .ember{position:absolute;border-radius:999px;animation:floatUp linear infinite;opacity:0}
-@keyframes floatUp{
-  0%{transform:translateY(0) translateX(0);opacity:0}
-  10%{opacity:.3}85%{opacity:.18}
-  100%{transform:translateY(-80vh) translateX(var(--drift));opacity:0}
-}
-.app{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:16px 16px 120px}
+@keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.3}85%{opacity:.18}100%{transform:translateY(-80vh) translateX(var(--drift));opacity:0}}
+.app{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:16px 16px 160px}
 
 /* ── HEADER ── */
 .s-header{text-align:center;padding:24px 0 16px}
 .s-logo{width:130px;height:auto;display:block;margin:0 auto 10px;filter:drop-shadow(0 4px 16px rgba(232,160,32,.35))}
 .s-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--muted2);margin-top:4px}
-
-/* ── DIVIDER ── */
 .warm-div{height:1px;background:linear-gradient(90deg,transparent,rgba(200,100,20,.55),rgba(232,160,32,.4),rgba(200,100,20,.55),transparent);margin:16px 0}
-
-/* ── SECTION LABEL ── */
 .sec-lbl{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
 
 /* ── TOP 5 ── */
 .top5{display:grid;gap:2px;margin-bottom:20px}
-.t5{display:flex;align-items:center;gap:12px;padding:14px 6px;border-bottom:1px solid rgba(255,255,255,.05)}
-.t5:first-child{border-top:1px solid rgba(255,255,255,.05)}
+.t5{display:flex;align-items:center;gap:12px;padding:14px 6px;border-bottom:1px solid rgba(255,255,255,.07)}
+.t5:first-child{border-top:1px solid rgba(255,255,255,.07)}
 .t5-rank{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--muted2);width:24px;text-align:center;flex:0 0 24px}
 .t5-name{font-family:'Exo 2',sans-serif;font-size:19px;font-weight:800;color:var(--text);flex:1}
-.t5-delta{font-size:11px;font-weight:700;margin-right:6px;white-space:nowrap}
-.t5-delta.up{color:#6db86d}
-.t5-delta.down{color:#c06050}
-.t5-delta.same{color:var(--muted)}
+.t5-delta{font-size:11px;font-weight:400;margin-right:6px;white-space:nowrap}
+.t5-delta.up{color:#6db86d}.t5-delta.down{color:#c06050}.t5-delta.same{color:var(--muted)}
 .t5-pts{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#fff}
 .t5-pts em{font-size:12px;font-style:normal;color:var(--amber);margin-left:3px;font-weight:700}
-
-/* ── VIEW MORE ── */
 .view-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--amber);background:none;border:none;cursor:pointer;padding:0;opacity:.85}
 .view-more:hover{opacity:1}
 
@@ -69,7 +52,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .spoiler-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .2s ease}
 .spoiler-wrap.open .spoiler-body{max-height:1400px;opacity:1;padding-top:16px}
 
-/* ── TRIBE COLUMNS ── */
+/* ── TRIBES ── */
 .tribe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .tribe-header{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:7px 8px;border-radius:8px;margin-bottom:8px}
 .tribe-header.cila{color:#ffb090;border:1px solid rgba(240,110,40,.5);background:rgba(240,110,40,.22);box-shadow:0 0 12px rgba(240,110,40,.2)}
@@ -83,8 +66,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .jury-icon{font-size:11px;opacity:.9;flex:0 0 auto}
 
 /* ── VIEWS ── */
-.view{display:none;margin-top:4px}
-.view.active{display:block}
+.view{display:none;margin-top:4px}.view.active{display:block}
 
 /* ── LEADERBOARD ── */
 .lb-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px}
@@ -94,7 +76,6 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .updated-dot{width:6px;height:6px;border-radius:999px;background:var(--amber);box-shadow:0 0 6px var(--amber);flex:0 0 6px}
 .lb-search{width:100%;border:none;border-bottom:1px solid rgba(255,255,255,.07);background:transparent;color:var(--text);padding:12px 2px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;margin-bottom:18px}
 .lb-search::placeholder{color:var(--muted)}
-
 .p-row{border-bottom:1px solid rgba(255,255,255,.09);cursor:pointer}
 .p-row:hover .p-name{color:var(--amber2)}
 .p-head-row{display:grid;grid-template-columns:32px 1fr auto 20px;align-items:center;gap:10px;padding:14px 4px}
@@ -103,12 +84,10 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .p-meta-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .p-tag{font-size:11px;color:var(--muted2);background:rgba(255,255,255,.04);border-radius:4px;padding:2px 7px;font-weight:600}
 .p-right{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.p-move{font-size:11px;font-weight:400;white-space:nowrap}
+.p-move.up{color:#6db86d}.p-move.down{color:#c06050}.p-move.same{color:var(--muted)}
 .p-pts{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff}
 .p-pts em{font-size:12px;font-style:normal;color:var(--amber);margin-left:3px;font-weight:700}
-.p-move{font-size:12px;font-weight:800;white-space:nowrap}
-.p-move.up{color:#6db86d}
-.p-move.down{color:#c06050}
-.p-move.same{color:var(--muted);font-size:11px}
 .p-chev{color:var(--muted);transition:transform .18s;flex:0 0 18px}
 .p-row.open .p-chev{transform:rotate(180deg)}
 .p-expand{max-height:0;opacity:0;overflow:hidden;transition:max-height .22s ease,opacity .18s}
@@ -136,31 +115,105 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .r-img{width:100%;border-radius:10px;display:block;margin-top:12px;opacity:.95}
 .r-date{font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600}
 
-/* ── NAV ── */
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:110px}
-.nav-svg{position:absolute;bottom:0;left:0;width:100%;height:110px;pointer-events:none}
-.nav-inner{
-  position:relative;z-index:1;
-  max-width:820px;margin:0 auto;
-  display:grid;grid-template-columns:1fr auto 1fr;
-  align-items:flex-end;
-  padding:0 28px calc(var(--safe-bottom) + 14px);
-  height:110px;
+/* ══════════════════════════════════════════
+   NAV — pure CSS bump, no SVG background path
+   ══════════════════════════════════════════ */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;
+  z-index:100;
+  height:var(--nav-h);
+  background:var(--nav-bg);
 }
-.nav-side{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:5px;padding-bottom:6px}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--amber2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:0;transition:opacity .15s;opacity:.5}
-.nav-btn svg{width:22px;height:22px;stroke:currentColor;display:block}
-.nav-btn.active{opacity:1}
-.nav-btn.active svg{filter:drop-shadow(0 0 6px rgba(232,160,32,.7))}
-.nav-btn:hover{opacity:.8}
+/* Left border segment — stops where circle starts */
+.nav::before{
+  content:'';position:absolute;top:0;left:0;
+  width:calc(50% - 50px);
+  height:1px;background:rgba(232,160,32,.28);
+}
+/* Right border segment */
+.nav::after{
+  content:'';position:absolute;top:0;right:0;
+  width:calc(50% - 50px);
+  height:1px;background:rgba(232,160,32,.28);
+}
 
-/* center bump logo — sits seamlessly in the curve */
-.nav-center-wrap{display:flex;flex-direction:column;align-items:center;position:relative;padding-bottom:4px}
-.nav-center{display:flex;flex-direction:column;align-items:center;background:none;border:none;cursor:pointer;padding:0;position:relative;margin-bottom:-2px}
-.nav-center-orb{position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,32,.32) 0%,rgba(232,160,32,.08) 50%,transparent 72%);pointer-events:none;z-index:0}
-.nav-center img{width:90px;height:90px;object-fit:contain;position:relative;z-index:1;transition:filter .15s;margin-top:-42px}
-.nav-center:hover img,.nav-center.active img{filter:drop-shadow(0 0 10px rgba(232,160,32,.5))}
-.nav-center-label{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--amber2);opacity:.85;position:relative;z-index:2;margin-top:2px}
+.nav-inner{
+  position:relative;z-index:2;
+  max-width:820px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 100px 1fr;
+  align-items:center;
+  height:var(--nav-h);
+  padding:0 12px calc(env(safe-area-inset-bottom,0px));
+}
+
+/* Side buttons — fully inside the 70px bar */
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:none;border:none;color:var(--amber2);cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.03em;
+  padding:6px 10px;border-radius:10px;
+  opacity:.45;transition:opacity .15s,box-shadow .15s;
+}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;display:block}
+.nav-btn.active{
+  opacity:1;
+  /* soft radial glow that follows the button — no hard border */
+  box-shadow:0 0 22px rgba(232,160,32,.22),0 0 8px rgba(232,160,32,.12);
+}
+.nav-btn:hover{opacity:.75}
+
+/* Center column: just the HOME label inside the bar */
+.nav-center-col{
+  display:flex;align-items:flex-end;justify-content:center;
+  height:var(--nav-h);
+  padding-bottom:9px;
+  position:relative;
+}
+.nav-home-label{
+  font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.03em;
+  color:var(--amber2);opacity:.85;
+  cursor:pointer;background:none;border:none;
+}
+
+/* Logo bump — absolutely positioned, extends above the nav bar */
+.nav-logo-btn{
+  position:absolute;
+  /* Circle is 100px. We want ~60px above nav top, so: 
+     bottom of circle = nav_h - (100 - 60) = 70 - 40 = 30px from nav bottom */
+  bottom:30px;
+  left:50%;transform:translateX(-50%);
+  width:100px;height:100px;
+  border-radius:50%;
+  background:var(--nav-bg);
+  border:1.5px solid rgba(232,160,32,.3);
+  z-index:10;
+  cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .2s;
+}
+.nav-logo-btn img{
+  width:88px;height:88px;object-fit:contain;
+  position:relative;z-index:2;
+  filter:drop-shadow(0 2px 10px rgba(0,0,0,.65));
+  transition:filter .15s;
+}
+/* Soft orb glow — radial, no hard edge, activates on active/hover */
+.nav-logo-orb{
+  position:absolute;inset:-12px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(232,160,32,0) 0%,transparent 70%);
+  transition:background .2s;
+  pointer-events:none;z-index:1;
+}
+.nav-logo-btn.active{border-color:rgba(232,160,32,.6)}
+.nav-logo-btn.active .nav-logo-orb,
+.nav-logo-btn:hover .nav-logo-orb{
+  background:radial-gradient(circle,rgba(232,160,32,.35) 0%,rgba(232,160,32,.1) 45%,transparent 72%);
+}
+.nav-logo-btn:hover{border-color:rgba(232,160,32,.5)}
 
 @media(max-width:480px){
   .t5-name{font-size:17px}
@@ -168,10 +221,9 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
   .lb-head{flex-direction:column;align-items:flex-start}
   .tribe-header{font-size:11px;padding:5px 4px}
   .c-box{font-size:12px;padding:6px 4px}
-  .nav-btn{font-size:11px;padding:6px 10px}
-  .nav-btn svg{width:23px;height:23px}
-  .nav-center img{width:56px}
-  .nav-center{transform:translateY(-14px)}
+  .nav-btn{font-size:10px;padding:5px 8px}
+  .nav-logo-btn{width:90px;height:90px;bottom:26px}
+  .nav-logo-btn img{width:78px;height:78px}
 }
 </style>
 </head>
@@ -180,7 +232,6 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 <div class="ember-wrap" id="embers"></div>
 <div class="app">
 
-  <!-- HOME -->
   <section id="view-home" class="view active">
     <div class="s-header">
       <img src="https://i.imgur.com/jXZQTQa.png" class="s-logo" alt="Survivor 50"/>
@@ -204,7 +255,6 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
     </div>
   </section>
 
-  <!-- LEADERBOARD -->
   <section id="view-lb" class="view">
     <div class="s-header" style="padding-bottom:12px;text-align:left">
       <div class="lb-head">
@@ -218,7 +268,6 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
     <div id="lb-list"></div>
   </section>
 
-  <!-- RESULTS -->
   <section id="view-results" class="view">
     <div class="s-header" style="padding-bottom:12px;text-align:left">
       <div class="lb-title">🔥 Weekly Results</div>
@@ -227,7 +276,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
     <div style="padding-top:18px">
       <div class="r-label">Official source</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--text);margin-bottom:8px">Global TV Points</div>
-      <div class="r-body">Castaway points are published by Global TV on Thursday nights. Check the link below, then update your Google Sheet — this leaderboard reflects your latest save automatically.</div>
+      <div class="r-body">Castaway points are published by Global TV on Thursday nights. Update your Google Sheet after checking — this leaderboard reflects your latest save automatically.</div>
       <a class="r-btn" href="https://www.globaltv.com/survivor-50-fantasy-tribe/" target="_blank" rel="noopener">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5h5v5"/><path d="M10 14L19 5"/><path d="M19 14v5H5V5h5"/></svg>
         Global TV Weekly Points
@@ -241,33 +290,31 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 
 </div>
 
-<!-- NAV -->
+<!-- NAV: flat bar + absolutely positioned logo bump -->
 <nav class="nav">
-  <svg class="nav-svg" viewBox="0 0 400 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,110 L0,52 L148,52 A52,52 0 0,0 252,52 L400,52 L400,110 Z" fill="#0d0f18"/>
-    <path d="M0,52 L148,52 A52,52 0 0,0 252,52 L400,52" fill="none" stroke="rgba(232,160,32,.28)" stroke-width="1"/>
-  </svg>
   <div class="nav-inner">
-    <div class="nav-side left">
+    <div style="display:flex;justify-content:center">
       <button class="nav-btn" id="nav-lb" onclick="setView('view-lb')">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V10"/><path d="M12 20V4"/><path d="M16 20v-7"/><path d="M5 20h14"/></svg>
         Leaderboard
       </button>
     </div>
-    <div class="nav-center-wrap">
-      <button class="nav-center active" id="nav-home" onclick="setView('view-home')">
-        <div class="nav-center-orb"></div>
-        <img src="https://i.imgur.com/jXZQTQa.png" alt="Home"/>
-      </button>
-      <span class="nav-center-label">Home</span>
+    <!-- Center column: HOME label only, logo is absolutely positioned -->
+    <div class="nav-center-col">
+      <button class="nav-home-label" onclick="setView('view-home')">Home</button>
     </div>
-    <div class="nav-side right">
+    <div style="display:flex;justify-content:center">
       <button class="nav-btn" id="nav-results" onclick="setView('view-results')">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
         Results
       </button>
     </div>
   </div>
+  <!-- Logo: absolutely positioned relative to .nav, bumps above -->
+  <button class="nav-logo-btn active" id="nav-home" onclick="setView('view-home')">
+    <div class="nav-logo-orb"></div>
+    <img src="https://i.imgur.com/jXZQTQa.png" alt="Home"/>
+  </button>
 </nav>
 
 <script>
@@ -286,8 +333,7 @@ async function init(){
   document.getElementById('results-img').src=RESULTS_IMAGE;
   try{
     const [p,pt,s]=await Promise.all([fetchCSV(PICKS_CSV),fetchCSV(POINTS_CSV),fetchCSV(STATUS_CSV)]);
-    parsePicks(p);parsePoints(pt);parseStatus(s);
-    renderAll();
+    parsePicks(p);parsePoints(pt);parseStatus(s);renderAll();
   }catch(e){console.error(e)}
 }
 
@@ -317,14 +363,14 @@ function parsePoints(t){
   const rows=parseCSV(t);if(!rows.length)return;
   const hdr=rows[0].map(h=>h.trim());
   const dataRows=rows.slice(1).filter(r=>(r[0]||'').trim());
-  const allEpCols=hdr.reduce((acc,h,i)=>{if(/^Ep\s*#?\d+/i.test(h))acc.push({h,i});return acc;},[]);
-  const populated=allEpCols.filter(({i})=>dataRows.some(r=>{const v=parseFloat(r[i]);return!isNaN(v)&&v!==0}));
-  episodeCols=populated.map(({h})=>h);
+  const allEp=hdr.reduce((acc,h,i)=>{if(/^Ep\s*#?\d+/i.test(h))acc.push({h,i});return acc;},[]);
+  const pop=allEp.filter(({i})=>dataRows.some(r=>{const v=parseFloat(r[i]);return!isNaN(v)&&v!==0}));
+  episodeCols=pop.map(({h})=>h);
   castawayPoints={};
   dataRows.forEach(row=>{
     const c=(row[0]||'').trim();if(!c)return;
     const eps={};
-    populated.forEach(({h,i})=>{const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v});
+    pop.forEach(({h,i})=>{const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v});
     castawayPoints[c.toLowerCase()]=eps;
   });
 }
@@ -337,30 +383,41 @@ function parseStatus(t){
 }
 
 function allCasts(p){return[...(p.tribe||[]),...(p.schoolyard||[])]}
-function playerTotal(p){return allCasts(p).reduce((s,c)=>{const e=castawayPoints[c.toLowerCase()]||{};return s+Object.values(e).reduce((a,b)=>a+b,0)},0)}
-function playerTotalUpTo(p,epIdx){
+function castTotal(p,epList){
   return allCasts(p).reduce((s,c)=>{
     const e=castawayPoints[c.toLowerCase()]||{};
-    return s+episodeCols.slice(0,epIdx+1).reduce((a,ep)=>a+(e[ep]||0),0);
+    return s+epList.reduce((a,ep)=>a+(e[ep]||0),0);
   },0);
 }
+function playerTotal(p){return castTotal(p,episodeCols)}
 function playerEp(p,ep){return allCasts(p).reduce((s,c)=>(s+((castawayPoints[c.toLowerCase()]||{})[ep]||0)),0)}
-function getSorted(){return[...players].map(p=>({...p,total:playerTotal(p)})).sort((a,b)=>b.total-a.total)}
-function getPlacementDelta(player,sortedNow){
+
+function getSorted(){
+  return[...players]
+    .map(p=>({...p,total:playerTotal(p)}))
+    .sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
+}
+
+function getPlacementDelta(playerName,sortedNow){
   if(episodeCols.length<2)return null;
-  const prevEpIdx=episodeCols.length-2;
-  // build previous ranking using cumulative total up to previous episode
-  const prevScores=[...players].map(p=>({
-    name:p.name,
-    total:allCasts(p).reduce((s,c)=>{
-      const e=castawayPoints[c.toLowerCase()]||{};
-      return s+episodeCols.slice(0,prevEpIdx+1).reduce((a,ep)=>a+(e[ep]||0),0);
-    },0)
-  })).sort((a,b)=>b.total-a.total);
-  const prevRank=prevScores.findIndex(p=>p.name===player.name)+1;
-  const currRank=sortedNow.findIndex(p=>p.name===player.name)+1;
-  if(prevRank===0||currRank===0)return null;
-  return prevRank-currRank; // positive = moved up, negative = moved down
+  // Previous = all episodes except the most recent one
+  const prevEps=episodeCols.slice(0,-1);
+  const prevSorted=players
+    .map(p=>({name:p.name,total:castTotal(p,prevEps)}))
+    .sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
+  // Current sorted with same tiebreaker
+  const currSorted=[...sortedNow].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
+  const prevRank=prevSorted.findIndex(p=>p.name===playerName)+1;
+  const currRank=currSorted.findIndex(p=>p.name===playerName)+1;
+  if(!prevRank||!currRank)return null;
+  return prevRank-currRank; // positive=moved up, negative=moved down
+}
+
+function moveTxt(move,cls){
+  if(move===null)return'';
+  if(move>0)return`<span class="${cls} up">^ ${move}</span>`;
+  if(move<0)return`<span class="${cls} down">v ${Math.abs(move)}</span>`;
+  return`<span class="${cls} same">—</span>`;
 }
 
 function renderAll(){renderHome();renderLB()}
@@ -369,86 +426,69 @@ function renderHome(){
   const sorted=getSorted();
   const medals=['🥇','🥈','🥉'];
   document.getElementById('top5').innerHTML=sorted.slice(0,5).map((p,i)=>{
-    const move=getPlacementDelta(p,sorted);
-    let dHtml='';
-    if(move!==null){
-      if(move>0)dHtml=`<span class="t5-delta up">▲ ${move}</span>`;
-      else if(move<0)dHtml=`<span class="t5-delta down">▼ ${Math.abs(move)}</span>`;
-      else dHtml=`<span class="t5-delta same">—</span>`;
-    }
+    const move=getPlacementDelta(p.name,sorted);
     return`<div class="t5">
       <div class="t5-rank">${i<3?medals[i]:i+1}</div>
       <div class="t5-name">${esc(p.name)}</div>
-      ${dHtml}
+      ${moveTxt(move,'t5-delta')}
       <div class="t5-pts">${p.total}<em>pts</em></div>
     </div>`;
   }).join('');
 
-  const tribes=['Cila','Kalo','Vatu'];
-  const tribeClass={Cila:'cila',Kalo:'kalo',Vatu:'vatu'};
-  const tribeMembers={Cila:[],Kalo:[],Vatu:[]};
-  Object.values(statusMap).forEach(s=>{if(tribeMembers[s.tribe])tribeMembers[s.tribe].push(s)});
+  const tribes=['Cila','Kalo','Vatu'],tc={Cila:'cila',Kalo:'kalo',Vatu:'vatu'},tm={Cila:[],Kalo:[],Vatu:[]};
+  Object.values(statusMap).forEach(s=>{if(tm[s.tribe])tm[s.tribe].push(s)});
   document.getElementById('cast-grid').innerHTML=tribes.map(t=>`
-    <div class="tribe-col">
-      <div class="tribe-header ${tribeClass[t]}">${t}</div>
-      <div class="tribe-members">${(tribeMembers[t]||[]).map(s=>{
-        let cls='c-box out';
-        if(s.active&&s.jury)cls='c-box jury';
-        else if(s.active)cls='c-box alive';
-        return`<div class="${cls}">${esc(s.name)}${s.jury?'<span class="jury-icon">⚖️</span>':''}</div>`;
-      }).join('')}</div>
-    </div>`).join('');
+    <div><div class="tribe-header ${tc[t]}">${t}</div>
+    <div class="tribe-members">${(tm[t]||[]).map(s=>{
+      let cls='c-box '+(s.active&&s.jury?'jury':s.active?'alive':'out');
+      return`<div class="${cls}">${esc(s.name)}${s.jury?'<span class="jury-icon">⚖️</span>':''}</div>`;
+    }).join('')}</div></div>`).join('');
 }
 
 function renderLB(){
   const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
   const sorted=getSorted();
-  document.getElementById('lb-list').innerHTML=sorted.filter(p=>!q||p.name.toLowerCase().includes(q)).map(p=>{
-    const rank=sorted.indexOf(p)+1;
-    const move=getPlacementDelta(p,sorted);
-    let moveHtml='';
-    if(move!==null){
-      if(move>0)moveHtml=`<span class="p-move up">▲ ${move}</span>`;
-      else if(move<0)moveHtml=`<span class="p-move down">▼ ${Math.abs(move)}</span>`;
-      else moveHtml=`<span class="p-move same">—</span>`;
-    }
-    const tAlive=(p.tribe||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
-    const sAlive=(p.schoolyard||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
-    const isOpen=openPlayer===p.name;
-    return`<div class="p-row${isOpen?' open':''}" onclick="toggle('${esc(p.name)}')">
-      <div class="p-head-row">
-        <div class="p-rank">${rank}</div>
-        <div>
-          <div class="p-name">${esc(p.name)}</div>
-          <div class="p-meta-tags">
-            <span class="p-tag">Tribe ${tAlive}/${(p.tribe||[]).length} alive</span>
-            <span class="p-tag">Picks ${sAlive}/${(p.schoolyard||[]).length} alive</span>
+  document.getElementById('lb-list').innerHTML=sorted
+    .filter(p=>!q||p.name.toLowerCase().includes(q))
+    .map(p=>{
+      const rank=sorted.indexOf(p)+1;
+      const move=getPlacementDelta(p.name,sorted);
+      const tAlive=(p.tribe||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
+      const sAlive=(p.schoolyard||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
+      const isOpen=openPlayer===p.name;
+      return`<div class="p-row${isOpen?' open':''}" onclick="toggle('${esc(p.name)}')">
+        <div class="p-head-row">
+          <div class="p-rank">${rank}</div>
+          <div>
+            <div class="p-name">${esc(p.name)}</div>
+            <div class="p-meta-tags">
+              <span class="p-tag">Tribe ${tAlive}/${(p.tribe||[]).length} alive</span>
+              <span class="p-tag">Picks ${sAlive}/${(p.schoolyard||[]).length} alive</span>
+            </div>
           </div>
+          <div class="p-right">
+            ${moveTxt(move,'p-move')}
+            <div class="p-pts">${p.total}<em>pts</em></div>
+          </div>
+          <svg class="p-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </div>
-        <div class="p-right">
-          ${moveHtml}
-          <div class="p-pts">${p.total}<em>pts</em></div>
-        </div>
-        <svg class="p-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-      </div>
-      <div class="p-expand"><div class="expand-inner">
-        <div class="d-lbl">Schoolyard picks</div>
-        <div class="chip-row">${chipList(p.schoolyard||[],'win')}</div>
-        <div class="d-lbl">Fantasy tribe</div>
-        <div class="chip-row">${chipList(p.tribe||[],'tribe')}</div>
-        ${episodeCols.length?`<div class="d-lbl">Points by episode</div><div class="ep-pips">${epPips(p)}</div>`:''}
-      </div></div>
-    </div>`;
-  }).join('');
+        <div class="p-expand"><div class="expand-inner">
+          <div class="d-lbl">Schoolyard picks</div>
+          <div class="chip-row">${chipList(p.schoolyard||[],'win')}</div>
+          <div class="d-lbl">Fantasy tribe</div>
+          <div class="chip-row">${chipList(p.tribe||[],'tribe')}</div>
+          ${episodeCols.length?`<div class="d-lbl">Points by episode</div><div class="ep-pips">${epPips(p)}</div>`:''}
+        </div></div>
+      </div>`;
+    }).join('');
 }
 
-function toggle(name){openPlayer=openPlayer===name?null:name;renderLB()}
+function toggle(n){openPlayer=openPlayer===n?null:n;renderLB()}
 function chipList(arr,cls){
   if(!arr.length)return`<span class="chip tribe" style="color:var(--muted)">—</span>`;
   return arr.map(c=>{
     const info=statusMap[c.toLowerCase()];
-    const out=info&&!info.active;
-    return`<span class="chip ${cls}${out?' out':''}">${esc(c)}${info?.jury?' ⚖️':''}</span>`;
+    return`<span class="chip ${cls}${info&&!info.active?' out':''}">${esc(c)}${info?.jury?' ⚖️':''}</span>`;
   }).join('');
 }
 function epPips(p){
@@ -460,29 +500,30 @@ function epPips(p){
 
 function setView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
-  const navMap={'view-lb':'nav-lb','view-home':'nav-home','view-results':'nav-results'};
-  Object.entries(navMap).forEach(([v,n])=>{
-    const el=document.getElementById(n);
-    if(el)el.classList.toggle('active',v===id);
-  });
+  // Update nav-btn active states
+  const map={'view-lb':'nav-lb','view-results':'nav-results'};
+  Object.entries(map).forEach(([v,n])=>document.getElementById(n)?.classList.toggle('active',v===id));
+  // Logo button active state
+  const logoBtn=document.getElementById('nav-home');
+  if(logoBtn)logoBtn.classList.toggle('active',id==='view-home');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
 (function(){
-  const wrap=document.getElementById('embers');
+  const w=document.getElementById('embers');
   for(let i=0;i<30;i++){
     const e=document.createElement('div');e.className='ember';
-    const h=5+Math.random()*28,size=2+Math.random()*3.5,drift=(Math.random()*30-15)+'px';
-    e.style.cssText=[`left:${Math.random()*100}%`,`bottom:${Math.random()*20}%`,`width:${size}px`,`height:${size}px`,`background:hsl(${h},95%,${58+Math.random()*18}%)`,`box-shadow:0 0 4px hsl(${h},95%,65%)`,`--drift:${drift}`,`animation-duration:${10+Math.random()*10}s`,`animation-delay:${Math.random()*6}s`].join(';');
-    wrap.appendChild(e);
+    const h=5+Math.random()*28,sz=2+Math.random()*3.5,dr=(Math.random()*30-15)+'px';
+    e.style.cssText=[`left:${Math.random()*100}%`,`bottom:${Math.random()*20}%`,`width:${sz}px`,`height:${sz}px`,`background:hsl(${h},95%,${58+Math.random()*18}%)`,`box-shadow:0 0 4px hsl(${h},95%,65%)`,`--drift:${dr}`,`animation-duration:${10+Math.random()*10}s`,`animation-delay:${Math.random()*6}s`].join(';');
+    w.appendChild(e);
   }
 })();
 
 (function(){
   const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
   let W,H;
-  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
+  const resize=()=>{W=cv.width=window.innerWidth;H=cv.height=window.innerHeight};
   resize();window.addEventListener('resize',resize);
   let t=0;
   (function draw(){
