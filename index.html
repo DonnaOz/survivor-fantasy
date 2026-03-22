@@ -9,18 +9,15 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#06080e;
-  --nav-bg:#0e1220;
   --text:#f0ebe0;
   --muted:#5a5040;
   --muted2:#8a7a60;
   --amber:#e8a020;
   --amber2:#f0c050;
-  --nav:72px;
-  --cila:#d4622a;
-  --kalo:#2a9a8a;
-  --vatu:#7a4aaa;
+  --nav-h:64px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
 }
-html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;overscroll-behavior:none}
+html,body{min-height:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;overscroll-behavior-y:none}
 canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .ember-wrap{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
 .ember{position:absolute;border-radius:999px;animation:floatUp linear infinite;opacity:0}
@@ -29,7 +26,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
   10%{opacity:.3}85%{opacity:.18}
   100%{transform:translateY(-80vh) translateX(var(--drift));opacity:0}
 }
-.app{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:16px 16px calc(var(--nav) + 48px)}
+.app{position:relative;z-index:2;max-width:820px;margin:0 auto;padding:16px 16px 120px}
 
 /* ── HEADER ── */
 .s-header{text-align:center;padding:24px 0 16px}
@@ -74,10 +71,10 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 
 /* ── TRIBE COLUMNS ── */
 .tribe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.tribe-header{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:6px 8px;border-radius:8px;margin-bottom:8px}
-.tribe-header.cila{color:#f09070;border:1px solid rgba(212,98,42,.4);background:rgba(212,98,42,.12);box-shadow:0 0 10px rgba(212,98,42,.15)}
-.tribe-header.kalo{color:#60c8b8;border:1px solid rgba(42,154,138,.4);background:rgba(42,154,138,.12);box-shadow:0 0 10px rgba(42,154,138,.15)}
-.tribe-header.vatu{color:#b080e0;border:1px solid rgba(122,74,170,.4);background:rgba(122,74,170,.12);box-shadow:0 0 10px rgba(122,74,170,.15)}
+.tribe-header{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:7px 8px;border-radius:8px;margin-bottom:8px}
+.tribe-header.cila{color:#ffb090;border:1px solid rgba(240,110,40,.5);background:rgba(240,110,40,.22);box-shadow:0 0 12px rgba(240,110,40,.2)}
+.tribe-header.kalo{color:#60c8b8;border:1px solid rgba(42,154,138,.5);background:rgba(42,154,138,.2);box-shadow:0 0 12px rgba(42,154,138,.18)}
+.tribe-header.vatu{color:#c090f0;border:1px solid rgba(122,74,170,.5);background:rgba(122,74,170,.22);box-shadow:0 0 12px rgba(122,74,170,.18)}
 .tribe-members{display:flex;flex-direction:column;gap:5px}
 .c-box{padding:7px 6px;border-radius:7px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:4px;line-height:1.2}
 .c-box.alive{background:rgba(232,160,32,.11);border:1px solid rgba(232,160,32,.5);color:#f5d070;box-shadow:0 0 7px rgba(232,160,32,.28),inset 0 0 5px rgba(232,160,32,.07)}
@@ -98,22 +95,20 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .lb-search{width:100%;border:none;border-bottom:1px solid rgba(255,255,255,.07);background:transparent;color:var(--text);padding:12px 2px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;margin-bottom:18px}
 .lb-search::placeholder{color:var(--muted)}
 
-.p-row{border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
+.p-row{border-bottom:1px solid rgba(255,255,255,.09);cursor:pointer}
 .p-row:hover .p-name{color:var(--amber2)}
-.p-head-row{display:grid;grid-template-columns:28px 1fr auto 20px;align-items:center;gap:10px;padding:14px 4px}
-.p-rank{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--muted2);text-align:center}
+.p-head-row{display:grid;grid-template-columns:32px 1fr auto 20px;align-items:center;gap:10px;padding:14px 4px}
+.p-rank{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:var(--muted2);text-align:center}
 .p-name{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:800;color:var(--text);transition:color .12s}
 .p-meta-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .p-tag{font-size:11px;color:var(--muted2);background:rgba(255,255,255,.04);border-radius:4px;padding:2px 7px;font-weight:600}
-.p-right{text-align:right}
+.p-right{display:flex;align-items:center;gap:8px;justify-content:flex-end}
 .p-pts{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff}
 .p-pts em{font-size:12px;font-style:normal;color:var(--amber);margin-left:3px;font-weight:700}
-.p-placement{text-align:right;margin-top:3px}
-.p-move{font-size:11px;font-weight:700}
+.p-move{font-size:12px;font-weight:800;white-space:nowrap}
 .p-move.up{color:#6db86d}
 .p-move.down{color:#c06050}
-.p-move.same{color:var(--muted)}
-.p-from{display:block;font-size:10px;color:var(--muted);font-weight:600;margin-top:1px}
+.p-move.same{color:var(--muted);font-size:11px}
 .p-chev{color:var(--muted);transition:transform .18s;flex:0 0 18px}
 .p-row.open .p-chev{transform:rotate(180deg)}
 .p-expand{max-height:0;opacity:0;overflow:hidden;transition:max-height .22s ease,opacity .18s}
@@ -144,23 +139,36 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 /* ── NAV ── */
 .nav{
   position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:rgba(255,255,255,.06);
+  background:rgba(255,255,255,.07);
   border-top:1px solid rgba(232,160,32,.18);
   box-shadow:0 -4px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);
   backdrop-filter:blur(24px);
   -webkit-backdrop-filter:blur(24px);
 }
-.nav-inner{max-width:820px;margin:0 auto;display:flex;justify-content:space-around;align-items:center;padding:10px 20px calc(env(safe-area-inset-bottom,0px) + 10px)}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;color:var(--muted2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:7px 14px;min-width:66px;transition:color .15s;border-radius:10px}
+.nav-inner{
+  max-width:820px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:10px 24px calc(var(--safe-bottom) + 10px);
+  gap:0;
+}
+/* side slots: each side is its own flex row so buttons sit evenly */
+.nav-side{display:flex;align-items:center;justify-content:center}
+.nav-side.left{justify-content:center}
+.nav-side.right{justify-content:center}
+
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;color:var(--amber2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:7px 14px;border-radius:10px;transition:opacity .15s;opacity:.55}
 .nav-btn svg{width:26px;height:26px;stroke:currentColor;display:block}
-.nav-btn.active{color:var(--amber2);background:rgba(232,160,32,.15)}
-.nav-btn:hover{color:var(--amber2)}
-.nav-logo-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 12px;border-radius:10px;transition:background .15s;position:relative}
-.nav-logo-btn::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,32,.35) 0%,rgba(232,160,32,.12) 40%,transparent 70%);pointer-events:none;transition:opacity .2s}
-.nav-logo-btn.active::before,.nav-logo-btn:hover::before{background:radial-gradient(circle,rgba(232,160,32,.55) 0%,rgba(232,160,32,.2) 40%,transparent 70%)}
-.nav-logo-btn img{width:50px;height:auto;position:relative;z-index:1;transition:filter .15s}
-.nav-logo-btn span{font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;color:var(--muted2);position:relative;z-index:1}
-.nav-logo-btn.active span,.nav-logo-btn:hover span{color:var(--amber2)}
+.nav-btn.active{opacity:1;background:rgba(232,160,32,.14)}
+.nav-btn:hover{opacity:.85}
+
+/* center logo */
+.nav-center{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;padding:0 8px;padding-bottom:4px;position:relative;transform:translateY(-18px)}
+.nav-center-orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,32,.45) 0%,rgba(232,160,32,.15) 45%,transparent 70%);pointer-events:none}
+.nav-center img{width:64px;height:auto;position:relative;z-index:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));transition:filter .15s}
+.nav-center:hover img,.nav-center.active img{filter:drop-shadow(0 2px 12px rgba(232,160,32,.5))}
+.nav-center-label{font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;color:var(--amber2);position:relative;z-index:1;margin-top:2px}
 
 @media(max-width:480px){
   .t5-name{font-size:17px}
@@ -168,8 +176,10 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
   .lb-head{flex-direction:column;align-items:flex-start}
   .tribe-header{font-size:11px;padding:5px 4px}
   .c-box{font-size:12px;padding:6px 4px}
-  .nav-btn{font-size:11px;padding:6px 10px;min-width:56px}
-  .nav-btn svg{width:24px;height:24px}
+  .nav-btn{font-size:11px;padding:6px 10px}
+  .nav-btn svg{width:23px;height:23px}
+  .nav-center img{width:56px}
+  .nav-center{transform:translateY(-14px)}
 }
 </style>
 </head>
@@ -184,12 +194,10 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
       <img src="https://i.imgur.com/jXZQTQa.png" class="s-logo" alt="Survivor 50"/>
       <div class="s-sub">Fantasy League · Season 50</div>
     </div>
-
     <div class="warm-div"></div>
     <div class="sec-lbl" style="margin-top:16px">Top 5 · This Week</div>
     <div class="top5" id="top5"></div>
     <button class="view-more" onclick="setView('view-lb')">Full Leaderboard →</button>
-
     <div class="spoiler-wrap" id="spoiler-wrap">
       <button class="spoiler-toggle" onclick="toggleSpoiler()">
         <div>
@@ -241,20 +249,26 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 
 </div>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
-    <button class="nav-btn" id="nav-lb" onclick="setView('view-lb')">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V10"/><path d="M12 20V4"/><path d="M16 20v-7"/><path d="M5 20h14"/></svg>
-      Leaderboard
-    </button>
-    <button class="nav-logo-btn active" id="nav-home" onclick="setView('view-home')">
+    <div class="nav-side left">
+      <button class="nav-btn" id="nav-lb" onclick="setView('view-lb')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V10"/><path d="M12 20V4"/><path d="M16 20v-7"/><path d="M5 20h14"/></svg>
+        Leaderboard
+      </button>
+    </div>
+    <button class="nav-center active" id="nav-home" onclick="setView('view-home')">
+      <div class="nav-center-orb"></div>
       <img src="https://i.imgur.com/jXZQTQa.png" alt="Home"/>
-      <span>Home</span>
+      <span class="nav-center-label">Home</span>
     </button>
-    <button class="nav-btn" id="nav-results" onclick="setView('view-results')">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
-      Results
-    </button>
+    <div class="nav-side right">
+      <button class="nav-btn" id="nav-results" onclick="setView('view-results')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+        Results
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -306,13 +320,13 @@ function parsePoints(t){
   const hdr=rows[0].map(h=>h.trim());
   const dataRows=rows.slice(1).filter(r=>(r[0]||'').trim());
   const allEpCols=hdr.reduce((acc,h,i)=>{if(/^Ep\s*#?\d+/i.test(h))acc.push({h,i});return acc;},[]);
-  const populatedEpCols=allEpCols.filter(({i})=>dataRows.some(r=>{const v=parseFloat(r[i]);return!isNaN(v)&&v!==0}));
-  episodeCols=populatedEpCols.map(({h})=>h);
+  const populated=allEpCols.filter(({i})=>dataRows.some(r=>{const v=parseFloat(r[i]);return!isNaN(v)&&v!==0}));
+  episodeCols=populated.map(({h})=>h);
   castawayPoints={};
   dataRows.forEach(row=>{
     const c=(row[0]||'').trim();if(!c)return;
     const eps={};
-    populatedEpCols.forEach(({h,i})=>{const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v});
+    populated.forEach(({h,i})=>{const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v});
     castawayPoints[c.toLowerCase()]=eps;
   });
 }
@@ -386,11 +400,11 @@ function renderLB(){
   document.getElementById('lb-list').innerHTML=sorted.filter(p=>!q||p.name.toLowerCase().includes(q)).map(p=>{
     const rank=sorted.indexOf(p)+1;
     const move=getPlacementDelta(p,sorted);
-    let placementHtml='';
+    let moveHtml='';
     if(move!==null){
-      if(move>0)placementHtml=`<div class="p-placement"><span class="p-move up">▲ ${move}</span><span class="p-from">from last week</span></div>`;
-      else if(move<0)placementHtml=`<div class="p-placement"><span class="p-move down">▼ ${Math.abs(move)}</span><span class="p-from">from last week</span></div>`;
-      else placementHtml=`<div class="p-placement"><span class="p-move same">—</span><span class="p-from">no change</span></div>`;
+      if(move>0)moveHtml=`<span class="p-move up">▲ ${move}</span>`;
+      else if(move<0)moveHtml=`<span class="p-move down">▼ ${Math.abs(move)}</span>`;
+      else moveHtml=`<span class="p-move same">—</span>`;
     }
     const tAlive=(p.tribe||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
     const sAlive=(p.schoolyard||[]).filter(c=>statusMap[c.toLowerCase()]?.active!==false).length;
@@ -406,8 +420,8 @@ function renderLB(){
           </div>
         </div>
         <div class="p-right">
+          ${moveHtml}
           <div class="p-pts">${p.total}<em>pts</em></div>
-          ${placementHtml}
         </div>
         <svg class="p-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </div>
@@ -437,10 +451,16 @@ function epPips(p){
     return`<div class="ep-pip"><span>${ep.replace(/[^0-9]/g,'')}</span><span class="${v===0?'zero':''}">${v}</span></div>`;
   }).join('');
 }
+
 function setView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
-  const map={'view-lb':'nav-lb','view-home':'nav-home','view-results':'nav-results'};
-  Object.entries(map).forEach(([v,n])=>document.getElementById(n)?.classList.toggle('active',v===id));
+  const navMap={'view-lb':'nav-lb','view-home':'nav-home','view-results':'nav-results'};
+  Object.entries(navMap).forEach(([v,n])=>{
+    const el=document.getElementById(n);
+    if(!el)return;
+    const isActive=v===id;
+    el.classList.toggle('active',isActive);
+  });
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
