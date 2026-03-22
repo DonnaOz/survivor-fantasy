@@ -296,7 +296,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
     <div style="display:flex;justify-content:center">
       <button class="nav-btn" id="nav-lb" onclick="setView('view-lb')">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V10"/><path d="M12 20V4"/><path d="M16 20v-7"/><path d="M5 20h14"/></svg>
-        Leaderboard
+        <span class="nav-btn-label">Leaderboard</span>
       </button>
     </div>
     <!-- Center column: HOME label only, logo is absolutely positioned -->
@@ -306,7 +306,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
     <div style="display:flex;justify-content:center">
       <button class="nav-btn" id="nav-results" onclick="setView('view-results')">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
-        Results
+        <span class="nav-btn-label">Results</span>
       </button>
     </div>
   </div>
@@ -363,14 +363,27 @@ function parsePoints(t){
   const rows=parseCSV(t);if(!rows.length)return;
   const hdr=rows[0].map(h=>h.trim());
   const dataRows=rows.slice(1).filter(r=>(r[0]||'').trim());
+
+  // Keep all episode columns that exist in the header
   const allEp=hdr.reduce((acc,h,i)=>{if(/^Ep\s*#?\d+/i.test(h))acc.push({h,i});return acc;},[]);
-  const pop=allEp.filter(({i})=>dataRows.some(r=>{const v=parseFloat(r[i]);return!isNaN(v)&&v!==0}));
+
+  // Only drop columns where EVERY player has a blank/empty cell
+  // (future episodes not yet played — truly empty, not just 0)
+  const pop=allEp.filter(({i})=>dataRows.some(r=>{
+    const raw=(r[i]||'').trim();
+    return raw!==''; // keep if at least one player has ANY value including 0
+  }));
+
   episodeCols=pop.map(({h})=>h);
   castawayPoints={};
   dataRows.forEach(row=>{
     const c=(row[0]||'').trim();if(!c)return;
     const eps={};
-    pop.forEach(({h,i})=>{const v=parseFloat(row[i]);eps[h]=isNaN(v)?0:v});
+    pop.forEach(({h,i})=>{
+      const raw=(row[i]||'').trim();
+      const v=raw===''?0:parseFloat(raw);
+      eps[h]=isNaN(v)?0:v;
+    });
     castawayPoints[c.toLowerCase()]=eps;
   });
 }
