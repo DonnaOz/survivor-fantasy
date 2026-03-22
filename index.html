@@ -137,38 +137,30 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .r-date{font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600}
 
 /* ── NAV ── */
-.nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:rgba(255,255,255,.07);
-  border-top:1px solid rgba(232,160,32,.18);
-  box-shadow:0 -4px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:100}
+.nav-svg{position:absolute;bottom:0;left:0;width:100%;height:100px;pointer-events:none}
 .nav-inner{
+  position:relative;z-index:1;
   max-width:820px;margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  padding:10px 24px calc(var(--safe-bottom) + 10px);
-  gap:0;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:flex-end;
+  padding:0 24px calc(var(--safe-bottom) + 12px);
+  height:100px;
 }
-/* side slots: each side is its own flex row so buttons sit evenly */
-.nav-side{display:flex;align-items:center;justify-content:center}
-.nav-side.left{justify-content:center}
-.nav-side.right{justify-content:center}
+.nav-side{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:5px;padding-bottom:2px}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;color:var(--amber2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:6px 12px;border-radius:10px;transition:opacity .15s;opacity:.5}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;display:block}
+.nav-btn.active{opacity:1}
+.nav-btn.active svg{filter:drop-shadow(0 0 6px rgba(232,160,32,.7))}
+.nav-btn:hover{opacity:.8}
 
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;color:var(--amber2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:7px 14px;border-radius:10px;transition:opacity .15s;opacity:.55}
-.nav-btn svg{width:26px;height:26px;stroke:currentColor;display:block}
-.nav-btn.active{opacity:1;background:rgba(232,160,32,.14)}
-.nav-btn:hover{opacity:.85}
-
-/* center logo */
-.nav-center{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;padding:0 8px;padding-bottom:4px;position:relative;transform:translateY(-18px)}
-.nav-center-orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,32,.45) 0%,rgba(232,160,32,.15) 45%,transparent 70%);pointer-events:none}
-.nav-center img{width:64px;height:auto;position:relative;z-index:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));transition:filter .15s}
-.nav-center:hover img,.nav-center.active img{filter:drop-shadow(0 2px 12px rgba(232,160,32,.5))}
-.nav-center-label{font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;color:var(--amber2);position:relative;z-index:1;margin-top:2px}
+/* center bump logo */
+.nav-center-wrap{display:flex;flex-direction:column;align-items:center;position:relative}
+.nav-center{display:flex;flex-direction:column;align-items:center;gap:0;background:none;border:none;cursor:pointer;padding:0;position:relative;transform:translateY(-30px)}
+.nav-center-orb{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,32,.3) 0%,rgba(232,160,32,.08) 50%,transparent 72%);pointer-events:none}
+.nav-center img{width:76px;height:auto;position:relative;z-index:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6));transition:filter .15s}
+.nav-center:hover img,.nav-center.active img{filter:drop-shadow(0 0 12px rgba(232,160,32,.55))}
+.nav-center-label{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--amber2);position:relative;z-index:1;transform:translateY(-26px);opacity:.85}
 
 @media(max-width:480px){
   .t5-name{font-size:17px}
@@ -251,21 +243,27 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 
 <!-- NAV -->
 <nav class="nav">
+  <svg class="nav-svg" viewBox="0 0 400 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,100 L0,38 L155,38 A46,46 0 0,0 245,38 L400,38 L400,100 Z" fill="#0d0f18"/>
+    <path d="M0,38 L155,38 A46,46 0 0,0 245,38 L400,38" fill="none" stroke="rgba(232,160,32,.28)" stroke-width="1"/>
+  </svg>
   <div class="nav-inner">
     <div class="nav-side left">
       <button class="nav-btn" id="nav-lb" onclick="setView('view-lb')">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V10"/><path d="M12 20V4"/><path d="M16 20v-7"/><path d="M5 20h14"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V10"/><path d="M12 20V4"/><path d="M16 20v-7"/><path d="M5 20h14"/></svg>
         Leaderboard
       </button>
     </div>
-    <button class="nav-center active" id="nav-home" onclick="setView('view-home')">
-      <div class="nav-center-orb"></div>
-      <img src="https://i.imgur.com/jXZQTQa.png" alt="Home"/>
+    <div class="nav-center-wrap">
+      <button class="nav-center active" id="nav-home" onclick="setView('view-home')">
+        <div class="nav-center-orb"></div>
+        <img src="https://i.imgur.com/jXZQTQa.png" alt="Home"/>
+      </button>
       <span class="nav-center-label">Home</span>
-    </button>
+    </div>
     <div class="nav-side right">
       <button class="nav-btn" id="nav-results" onclick="setView('view-results')">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
         Results
       </button>
     </div>
@@ -457,9 +455,7 @@ function setView(id){
   const navMap={'view-lb':'nav-lb','view-home':'nav-home','view-results':'nav-results'};
   Object.entries(navMap).forEach(([v,n])=>{
     const el=document.getElementById(n);
-    if(!el)return;
-    const isActive=v===id;
-    el.classList.toggle('active',isActive);
+    if(el)el.classList.toggle('active',v===id);
   });
   window.scrollTo({top:0,behavior:'smooth'});
 }
