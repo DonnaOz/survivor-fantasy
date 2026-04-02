@@ -14,7 +14,8 @@
   --amber:#e8a020;--amber2:#f0c050;
   --nav-h:70px;--nav-bg:#0d0f18;
 }
-html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:none}
+html{height:100%;overflow-y:scroll}
+body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden;overscroll-behavior-y:none}
 canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .ember-wrap{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
 .ember{position:absolute;border-radius:999px;animation:floatUp linear infinite;opacity:0}
@@ -27,6 +28,16 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .s-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--muted2);margin-top:4px}
 .warm-div{height:1px;background:linear-gradient(90deg,transparent,rgba(200,100,20,.55),rgba(232,160,32,.4),rgba(200,100,20,.55),transparent);margin:16px 0}
 .sec-lbl{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
+
+/* ── ALERT BANNER ── */
+.alert-banner{
+  background:rgba(240,192,80,.12);border:1px solid rgba(240,192,80,.35);
+  border-radius:14px;padding:14px 16px;margin-bottom:20px;
+  display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.alert-text{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:var(--amber2);letter-spacing:.02em}
+.alert-link{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);background:none;border:none;cursor:pointer;white-space:nowrap;opacity:.9;padding:0}
+.alert-link:hover{opacity:1}
 
 /* ── TOP 5 ── */
 .top5{display:grid;gap:2px;margin-bottom:20px}
@@ -54,13 +65,10 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .spoiler-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .2s ease}
 .spoiler-wrap.open .spoiler-body{max-height:1400px;opacity:1;padding-top:16px}
 
-/* ── TRIBES ── */
-.tribe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.tribe-header{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:7px 8px;border-radius:8px;margin-bottom:8px}
-.tribe-header.cila{color:#ffb090;border:1px solid rgba(240,110,40,.5);background:rgba(240,110,40,.22);box-shadow:0 0 12px rgba(240,110,40,.2)}
-.tribe-header.kalo{color:#60c8b8;border:1px solid rgba(42,154,138,.5);background:rgba(42,154,138,.2);box-shadow:0 0 12px rgba(42,154,138,.18)}
-.tribe-header.vatu{color:#c090f0;border:1px solid rgba(122,74,170,.5);background:rgba(122,74,170,.22);box-shadow:0 0 12px rgba(122,74,170,.18)}
-.tribe-members{display:flex;flex-direction:column;gap:5px}
+/* ── CASTAWAY GRID (post-merge, flat) ── */
+.cast-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+@media(min-width:500px){.cast-grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:680px){.cast-grid{grid-template-columns:repeat(5,1fr)}}
 .c-box{padding:7px 6px;border-radius:7px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;gap:4px;line-height:1.2}
 .c-box.alive{background:rgba(232,160,32,.11);border:1px solid rgba(232,160,32,.5);color:#f5d070;box-shadow:0 0 7px rgba(232,160,32,.28),inset 0 0 5px rgba(232,160,32,.07)}
 .c-box.jury{background:rgba(100,180,100,.09);border:1px solid rgba(100,180,100,.38);color:#90c878;box-shadow:0 0 7px rgba(100,180,100,.22)}
@@ -78,7 +86,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .updated-dot{width:6px;height:6px;border-radius:999px;background:var(--amber);box-shadow:0 0 6px var(--amber);flex:0 0 6px}
 .lb-search{width:100%;border:none;border-bottom:1px solid rgba(255,255,255,.07);background:transparent;color:var(--text);padding:12px 2px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;margin-bottom:18px}
 .lb-search::placeholder{color:var(--muted)}
-.p-row{border-bottom:1px solid rgba(255,255,255,.09);cursor:pointer}
+.p-row{border-bottom:1px solid rgba(255,255,255,.09);cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
 .p-row:hover .p-name{color:var(--amber2)}
 .p-head-row{display:grid;grid-template-columns:32px 1fr auto 20px;align-items:center;gap:10px;padding:14px 4px}
 .p-rank{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:var(--muted2);text-align:center}
@@ -117,116 +125,32 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 .r-img{width:100%;border-radius:10px;display:block;margin-top:12px;opacity:.95}
 .r-date{font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600}
 
-/* ══════════════════════════════════════════
-   NAV — pure CSS bump, no SVG background path
-   ══════════════════════════════════════════ */
-.nav{
-  position:fixed;bottom:0;left:0;right:0;
-  z-index:100;
-  height:var(--nav-h);
-  background:var(--nav-bg);
-}
-/* Left border segment — stops where circle starts */
-.nav::before{
-  content:'';position:absolute;top:0;left:0;
-  width:calc(50% - 50px);
-  height:1px;background:rgba(232,160,32,.28);
-}
-/* Right border segment */
-.nav::after{
-  content:'';position:absolute;top:0;right:0;
-  width:calc(50% - 50px);
-  height:1px;background:rgba(232,160,32,.28);
-}
-
-.nav-inner{
-  position:relative;z-index:2;
-  max-width:820px;margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 100px 1fr;
-  align-items:center;
-  height:var(--nav-h);
-  padding:0 12px calc(env(safe-area-inset-bottom,0px));
-}
-
-/* Side buttons — fully inside the 70px bar */
-.nav-btn{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  background:none;border:none;color:var(--amber2);cursor:pointer;
-  font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;
-  text-transform:uppercase;letter-spacing:.03em;
-  padding:6px 10px;border-radius:10px;
-  opacity:.45;transition:opacity .15s,box-shadow .15s;
-}
+/* ── NAV ── */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:var(--nav-h);background:var(--nav-bg)}
+.nav::before{content:'';position:absolute;top:0;left:0;width:calc(50% - 72px);height:1px;background:rgba(232,160,32,.28)}
+.nav::after{content:'';position:absolute;top:0;right:0;width:calc(50% - 72px);height:1px;background:rgba(232,160,32,.28)}
+.nav-inner{position:relative;z-index:2;max-width:820px;margin:0 auto;display:grid;grid-template-columns:1fr 144px 1fr;align-items:center;height:var(--nav-h);padding:0 12px calc(env(safe-area-inset-bottom,0px))}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--amber2);cursor:pointer;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:6px 10px;border-radius:10px;opacity:.45;transition:opacity .15s,box-shadow .15s;outline:none;-webkit-tap-highlight-color:transparent}
 .nav-btn svg{width:22px;height:22px;stroke:currentColor;display:block}
-.nav-btn.active{
-  opacity:1;
-  /* soft radial glow that follows the button — no hard border */
-  box-shadow:0 0 22px rgba(232,160,32,.22),0 0 8px rgba(232,160,32,.12);
-}
+.nav-btn.active{opacity:1;box-shadow:0 0 22px rgba(232,160,32,.22),0 0 8px rgba(232,160,32,.12)}
 .nav-btn:hover{opacity:.75}
-
-/* Center column: just the HOME label inside the bar */
-.nav-center-col{
-  display:flex;align-items:flex-end;justify-content:center;
-  height:var(--nav-h);
-  padding-bottom:9px;
-  position:relative;
-}
-.nav-home-label{
-  font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;
-  text-transform:uppercase;letter-spacing:.03em;
-  color:var(--amber2);opacity:.85;
-  cursor:pointer;background:none;border:none;
-  margin-bottom:-4px;
-}
-
-/* Logo bump — absolutely positioned, extends above the nav bar */
-.nav-logo-btn{
-  position:absolute;
-  /* Circle is 100px. We want ~60px above nav top, so: 
-     bottom of circle = nav_h - (100 - 60) = 70 - 40 = 30px from nav bottom */
-  bottom:30px;
-  left:50%;transform:translateX(-50%);
-  width:100px;height:100px;
-  border-radius:50%;
-  background:var(--nav-bg);
-  border:1.5px solid rgba(232,160,32,.3);
-  z-index:10;
-  cursor:pointer;padding:0;
-  display:flex;align-items:center;justify-content:center;
-  transition:border-color .2s;
-}
-.nav-logo-btn img{
-  width:88px;height:88px;object-fit:contain;
-  position:relative;z-index:2;
-  filter:drop-shadow(0 2px 10px rgba(0,0,0,.65));
-  transition:filter .15s;
-}
-/* Soft orb glow — radial, no hard edge, activates on active/hover */
-.nav-logo-orb{
-  position:absolute;inset:-14px;
-  border-radius:20px;
-  background:radial-gradient(circle,rgba(232,160,32,0) 0%,transparent 70%);
-  transition:background .2s;
-  pointer-events:none;z-index:1;
-}
+.nav-center-col{display:flex;align-items:flex-end;justify-content:center;height:var(--nav-h);padding-bottom:8px;position:relative}
+.nav-home-label{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--amber2);opacity:.85;cursor:pointer;background:none;border:none;margin-bottom:2px;outline:none;-webkit-tap-highlight-color:transparent}
+.nav-logo-btn{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);width:140px;height:88px;border-radius:999px;background:var(--nav-bg);border:1.5px solid rgba(232,160,32,.3);z-index:10;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s;outline:none;-webkit-tap-highlight-color:transparent;padding:0}
+.nav-logo-btn img{width:128px;height:80px;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 2px 10px rgba(0,0,0,.65));transition:filter .15s;display:block}
+.nav-logo-orb{position:absolute;inset:-14px;border-radius:999px;background:radial-gradient(circle,rgba(232,160,32,0) 0%,transparent 70%);transition:background .2s;pointer-events:none;z-index:1}
 .nav-logo-btn.active{border-color:rgba(232,160,32,.6)}
-.nav-logo-btn.active .nav-logo-orb,
-.nav-logo-btn:hover .nav-logo-orb{
-  background:radial-gradient(circle,rgba(232,160,32,.35) 0%,rgba(232,160,32,.1) 45%,transparent 72%);
-}
+.nav-logo-btn.active .nav-logo-orb,.nav-logo-btn:hover .nav-logo-orb{background:radial-gradient(circle,rgba(232,160,32,.35) 0%,rgba(232,160,32,.1) 45%,transparent 72%)}
 .nav-logo-btn:hover{border-color:rgba(232,160,32,.5)}
 
 @media(max-width:480px){
   .t5-name{font-size:17px}
   .s-logo{width:110px}
   .lb-head{flex-direction:column;align-items:flex-start}
-  .tribe-header{font-size:11px;padding:5px 4px}
   .c-box{font-size:12px;padding:6px 4px}
   .nav-btn{font-size:10px;padding:5px 8px}
-  .nav-logo-btn{width:116px;height:80px;bottom:24px;border-radius:999px}
-  .nav-logo-btn img{width:104px;height:70px}
+  .nav-logo-btn{width:124px;height:78px;bottom:24px}
+  .nav-logo-btn img{width:114px;height:70px}
 }
 </style>
 </head>
@@ -235,31 +159,41 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 <div class="ember-wrap" id="embers"></div>
 <div class="app">
 
+  <!-- HOME -->
   <section id="view-home" class="view active">
     <div class="s-header">
       <img src="https://i.imgur.com/H1xb1zu.png" class="s-logo" alt="Survivor 50"/>
       <div class="s-sub">Fantasy League · Season 50</div>
     </div>
     <div class="warm-div"></div>
-    <div class="sec-lbl" style="margin-top:16px">Top 5 · This Week</div>
+
+    <div class="alert-banner" id="alert-banner">
+      <div class="alert-text" id="alert-text">Scores are in — check it out!</div>
+      <button class="alert-link" onclick="setView('view-lb')">Go to Leaderboard →</button>
+    </div>
+
+    <div class="sec-lbl" style="margin-top:4px">Top 5 · This Week</div>
     <div class="top5" id="top5"></div>
     <button class="view-more" onclick="setView('view-lb')">Full Leaderboard →</button>
+
     <div class="spoiler-wrap" id="spoiler-wrap">
       <button class="spoiler-toggle" onclick="toggleSpoiler()">
         <div>
           <div class="spoiler-title">🔥 Castaway Status</div>
-          <div class="spoiler-desc">Don't peek until you've watched the latest episode!<br>Tribe breakdown + elimination status.</div>
+          <div class="spoiler-desc">Don't peek until you've watched the latest episode!<br>After the Merge: elimination status.</div>
         </div>
         <div class="spoiler-reveal">Tap to reveal <span class="spoiler-chev-inner">▼</span></div>
       </button>
       <div class="spoiler-body">
-        <div class="tribe-grid" id="cast-grid"></div>
+        <div class="cast-grid" id="cast-grid"></div>
       </div>
     </div>
+
     <div class="warm-div" style="margin-top:24px"></div>
     <img src="https://i.imgur.com/eUFe60P.png" alt="Season graphic" style="width:100%;border-radius:12px;display:block;opacity:.95;margin-top:4px"/>
   </section>
 
+  <!-- LEADERBOARD -->
   <section id="view-lb" class="view">
     <div class="s-header" style="padding-bottom:12px;text-align:left">
       <div class="lb-head">
@@ -273,6 +207,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
     <div id="lb-list"></div>
   </section>
 
+  <!-- RESULTS -->
   <section id="view-results" class="view">
     <div class="s-header" style="padding-bottom:12px;text-align:left">
       <div class="lb-title">🔥 Weekly Results</div>
@@ -295,7 +230,7 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 
 </div>
 
-<!-- NAV: flat bar + absolutely positioned logo bump -->
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
     <div style="display:flex;justify-content:center">
@@ -304,7 +239,6 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
         Leaderboard
       </button>
     </div>
-    <!-- Center column: HOME label only, logo is absolutely positioned -->
     <div class="nav-center-col">
       <button class="nav-home-label" onclick="setView('view-home')">Home</button>
     </div>
@@ -315,16 +249,18 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
       </button>
     </div>
   </div>
-  <!-- Logo: absolutely positioned relative to .nav, bumps above -->
   <button class="nav-logo-btn active" id="nav-home" onclick="setView('view-home')">
     <div class="nav-logo-orb"></div>
-          <img src="https://i.imgur.com/H1xb1zu.png" alt="Home"/>
+    <img src="https://i.imgur.com/H1xb1zu.png" alt="Home"/>
   </button>
 </nav>
 
 <script>
-const RESULTS_DATE  = 'March 27, 2026';
-const RESULTS_IMAGE = 'https://i.imgur.com/zKxUXfl.jpeg';
+// ── WEEKLY UPDATE ──
+const RESULTS_DATE  = 'April 2nd, 2026';
+const RESULTS_IMAGE = 'https://i.imgur.com/PuJfw4X.jpeg';
+
+// ── CSV URLS ──
 const PICKS_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=917978154&single=true&output=csv';
 const POINTS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1016742147&single=true&output=csv';
 const STATUS_CSV  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=1119897761&single=true&output=csv';
@@ -383,7 +319,11 @@ function parseStatus(t){
   statusMap={};
   parseCSV(t).slice(1).forEach(row=>{
     const n=(row[0]||'').trim();if(!n)return;
-    statusMap[n.toLowerCase()]={name:n,active:/^active$/i.test((row[1]||'').trim()),jury:/^yes$/i.test((row[2]||'').trim()),tribe:(row[3]||'').trim()};
+    statusMap[n.toLowerCase()]={
+      name:n,
+      active:/^active$/i.test((row[1]||'').trim()),
+      jury:/^yes$/i.test((row[2]||'').trim())
+    };
   });
 }
 
@@ -396,28 +336,23 @@ function castTotal(p,epList){
 }
 function playerTotal(p){return castTotal(p,episodeCols)}
 function playerEp(p,ep){return allCasts(p).reduce((s,c)=>(s+((castawayPoints[c.toLowerCase()]||{})[ep]||0)),0)}
-
 function getSorted(){
   return[...players]
     .map(p=>({...p,total:playerTotal(p)}))
     .sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
 }
-
 function getPlacementDelta(playerName,sortedNow){
   if(episodeCols.length<2)return null;
-  // Previous = all episodes except the most recent one
   const prevEps=episodeCols.slice(0,-1);
   const prevSorted=players
     .map(p=>({name:p.name,total:castTotal(p,prevEps)}))
     .sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
-  // Current sorted with same tiebreaker
   const currSorted=[...sortedNow].sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name));
   const prevRank=prevSorted.findIndex(p=>p.name===playerName)+1;
   const currRank=currSorted.findIndex(p=>p.name===playerName)+1;
   if(!prevRank||!currRank)return null;
-  return prevRank-currRank; // positive=moved up, negative=moved down
+  return prevRank-currRank;
 }
-
 function moveTxt(move,cls){
   if(move===null)return'';
   if(move>0)return`<span class="${cls} up">^ ${move}</span>`;
@@ -425,7 +360,18 @@ function moveTxt(move,cls){
   return`<span class="${cls} same">—</span>`;
 }
 
-function renderAll(){renderHome();renderLB()}
+function renderAll(){
+  if(episodeCols.length){
+    const epNum=episodeCols[episodeCols.length-1].replace(/[^0-9]/g,'');
+    const banner=document.getElementById('alert-banner');
+    const alertText=document.getElementById('alert-text');
+    if(banner&&alertText){
+      alertText.textContent=`Week ${epNum} scores are in — check it out!`;
+      banner.style.display='flex';
+    }
+  }
+  renderHome();renderLB();
+}
 
 function renderHome(){
   const sorted=getSorted();
@@ -440,14 +386,12 @@ function renderHome(){
     </div>`;
   }).join('');
 
-  const tribes=['Cila','Kalo','Vatu'],tc={Cila:'cila',Kalo:'kalo',Vatu:'vatu'},tm={Cila:[],Kalo:[],Vatu:[]};
-  Object.values(statusMap).forEach(s=>{if(tm[s.tribe])tm[s.tribe].push(s)});
-  document.getElementById('cast-grid').innerHTML=tribes.map(t=>`
-    <div><div class="tribe-header ${tc[t]}">${t}</div>
-    <div class="tribe-members">${(tm[t]||[]).map(s=>{
-      let cls='c-box '+(s.active&&s.jury?'jury':s.active?'alive':'out');
-      return`<div class="${cls}">${esc(s.name)}${s.jury?'<span class="jury-icon">⚖️</span>':''}</div>`;
-    }).join('')}</div></div>`).join('');
+  // Flat post-merge grid — shuffled
+  const all=Object.values(statusMap).sort(()=>Math.random()-.5);
+  document.getElementById('cast-grid').innerHTML=all.map(s=>{
+    const cls='c-box '+(s.active&&s.jury?'jury':s.active?'alive':'out');
+    return`<div class="${cls}">${esc(s.name)}${s.jury?'<span class="jury-icon">⚖️</span>':''}</div>`;
+  }).join('');
 }
 
 function renderLB(){
@@ -505,12 +449,9 @@ function epPips(p){
 
 function setView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
-  // Update nav-btn active states
   const map={'view-lb':'nav-lb','view-results':'nav-results'};
   Object.entries(map).forEach(([v,n])=>document.getElementById(n)?.classList.toggle('active',v===id));
-  // Logo button active state
-  const logoBtn=document.getElementById('nav-home');
-  if(logoBtn)logoBtn.classList.toggle('active',id==='view-home');
+  document.getElementById('nav-home')?.classList.toggle('active',id==='view-home');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
