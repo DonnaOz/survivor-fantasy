@@ -369,7 +369,21 @@ function castTotal(p,epList){
   return regularTotal+mergeTotal;
 }
 function playerTotal(p){return castTotal(p,episodeCols)}
-function playerEp(p,ep){return allCasts(p).reduce((s,c)=>(s+((castawayPoints[c.toLowerCase()]||{})[ep]||0)),0)}
+function playerEp(p,ep){
+  // Regular picks (deduped)
+  const regular=allCasts(p).reduce((s,c)=>(s+((castawayPoints[c.toLowerCase()]||{})[ep]||0)),0);
+  // Merge pick — only count from Ep #7 onwards, and only if not already in allCasts
+  let merge=0;
+  if(p.mergePick){
+    const mergeKey=p.mergePick.trim().toLowerCase();
+    const alreadyCounted=allCasts(p).some(c=>c.trim().toLowerCase()===mergeKey);
+    const validEp=mergeEps().includes(ep);
+    if(!alreadyCounted&&validEp){
+      merge=(castawayPoints[mergeKey]||{})[ep]||0;
+    }
+  }
+  return regular+merge;
+}
 function getSorted(){
   return[...players]
     .map(p=>({...p,total:playerTotal(p)}))
