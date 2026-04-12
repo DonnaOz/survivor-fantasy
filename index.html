@@ -286,9 +286,31 @@ function parseCSV(t){
     c.push(cur.trim());return c;
   });
 }
-const MERGE_EP_START = 'Ep #7'; // merge pick only earns points from this episode onwards
+const MERGE_EP_START = 'Ep #7';
+
+function mergeEps(){
+  const idx=episodeCols.indexOf(MERGE_EP_START);
+  return idx===-1?[]:episodeCols.slice(idx);
+}
 
 function parsePicks(t){
+  const rows=parseCSV(t);if(!rows.length)return;
+  const hdr=rows[0];players=[];
+  rows.slice(1).forEach(row=>{
+    const name=(row[0]||'').trim();if(!name)return;
+    const tribe=[],schoolyard=[];
+    let mergePick='';
+    hdr.forEach((h,i)=>{
+      const v=(row[i]||'').trim();if(!v)return;
+      if(/^Tribe\s*\d+$/i.test(h))tribe.push(v);
+      else if(/^Schoolyard\s*\d+$/i.test(h))schoolyard.push(v);
+      else if(/^MergePicks$/i.test(h))mergePick=v;
+    });
+    players.push({name,tribe,schoolyard,mergePick});
+  });
+}
+
+function allCasts(p){
   const rows=parseCSV(t);if(!rows.length)return;
   const hdr=rows[0];players=[];
   rows.slice(1).forEach(row=>{
