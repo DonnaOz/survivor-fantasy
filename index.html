@@ -331,7 +331,16 @@ function parseStatus(t){
   });
 }
 
-function allCasts(p){return[...(p.tribe||[]),...(p.schoolyard||[])]}
+function allCasts(p){
+  // deduplicate — same castaway in tribe + schoolyard should only count once
+  const seen=new Set();
+  const unique=[];
+  [...(p.tribe||[]),...(p.schoolyard||[])].forEach(c=>{
+    const key=c.trim().toLowerCase();
+    if(key&&!seen.has(key)){seen.add(key);unique.push(c);}
+  });
+  return unique;
+}
 
 // Episodes from Ep #7 onwards for merge pick scoring
 function mergeEps(){
@@ -340,17 +349,22 @@ function mergeEps(){
 }
 
 function castTotal(p,epList){
-  // Regular picks: sum across provided epList
+  // Regular picks (deduped): sum across provided epList
   const regularTotal=allCasts(p).reduce((s,c)=>{
     const e=castawayPoints[c.toLowerCase()]||{};
     return s+epList.reduce((a,ep)=>a+(e[ep]||0),0);
   },0);
-  // Merge pick: only count episodes >= Ep #7 that are also in epList
+  // Merge pick: only count Ep#7+ episodes that are in epList
+  // Skip if merge pick is already counted in regular picks
   let mergeTotal=0;
   if(p.mergePick){
-    const e=castawayPoints[p.mergePick.toLowerCase()]||{};
-    const validEps=mergeEps().filter(ep=>epList.includes(ep));
-    mergeTotal=validEps.reduce((a,ep)=>a+(e[ep]||0),0);
+    const mergeKey=p.mergePick.trim().toLowerCase();
+    const alreadyCounted=allCasts(p).some(c=>c.trim().toLowerCase()===mergeKey);
+    if(!alreadyCounted){
+      const e=castawayPoints[mergeKey]||{};
+      const validEps=mergeEps().filter(ep=>epList.includes(ep));
+      mergeTotal=validEps.reduce((a,ep)=>a+(e[ep]||0),0);
+    }
   }
   return regularTotal+mergeTotal;
 }
