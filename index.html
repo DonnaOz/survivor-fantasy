@@ -257,8 +257,8 @@ canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4}
 
 <script>
 // ── WEEKLY UPDATE ──
-const RESULTS_DATE  = 'April 2nd, 2026';
-const RESULTS_IMAGE = 'https://i.imgur.com/PuJfw4X.jpeg';
+const RESULTS_DATE  = 'March 27, 2026';
+const RESULTS_IMAGE = 'https://i.imgur.com/zKxUXfl.jpeg';
 
 // ── CSV URLS ──
 const PICKS_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQCfNzdwkwZH_qjBrHsWDv1H3kN_WHUhMZL8WPeIn00BEVFABjmYY0tdfgc5N3y_iYoQ7TUUGFXETE1/pub?gid=917978154&single=true&output=csv';
@@ -286,18 +286,22 @@ function parseCSV(t){
     c.push(cur.trim());return c;
   });
 }
+const MERGE_EP_START = 'Ep #7'; // merge pick only earns points from this episode onwards
+
 function parsePicks(t){
   const rows=parseCSV(t);if(!rows.length)return;
   const hdr=rows[0];players=[];
   rows.slice(1).forEach(row=>{
     const name=(row[0]||'').trim();if(!name)return;
     const tribe=[],schoolyard=[];
+    let mergePick='';
     hdr.forEach((h,i)=>{
       const v=(row[i]||'').trim();if(!v)return;
       if(/^Tribe\s*\d+$/i.test(h))tribe.push(v);
       else if(/^Schoolyard\s*\d+$/i.test(h))schoolyard.push(v);
+      else if(/^MergePicks$/i.test(h))mergePick=v;
     });
-    players.push({name,tribe,schoolyard});
+    players.push({name,tribe,schoolyard,mergePick});
   });
 }
 function parsePoints(t){
@@ -328,11 +332,27 @@ function parseStatus(t){
 }
 
 function allCasts(p){return[...(p.tribe||[]),...(p.schoolyard||[])]}
+
+// Episodes from Ep #7 onwards for merge pick scoring
+function mergeEps(){
+  const idx=episodeCols.indexOf(MERGE_EP_START);
+  return idx===-1?[]:episodeCols.slice(idx);
+}
+
 function castTotal(p,epList){
-  return allCasts(p).reduce((s,c)=>{
+  // Regular picks: sum across provided epList
+  const regularTotal=allCasts(p).reduce((s,c)=>{
     const e=castawayPoints[c.toLowerCase()]||{};
     return s+epList.reduce((a,ep)=>a+(e[ep]||0),0);
   },0);
+  // Merge pick: only count episodes >= Ep #7 that are also in epList
+  let mergeTotal=0;
+  if(p.mergePick){
+    const e=castawayPoints[p.mergePick.toLowerCase()]||{};
+    const validEps=mergeEps().filter(ep=>epList.includes(ep));
+    mergeTotal=validEps.reduce((a,ep)=>a+(e[ep]||0),0);
+  }
+  return regularTotal+mergeTotal;
 }
 function playerTotal(p){return castTotal(p,episodeCols)}
 function playerEp(p,ep){return allCasts(p).reduce((s,c)=>(s+((castawayPoints[c.toLowerCase()]||{})[ep]||0)),0)}
@@ -424,7 +444,8 @@ function renderLB(){
         <div class="p-expand"><div class="expand-inner">
           <div class="d-lbl">Schoolyard picks</div>
           <div class="chip-row">${chipList(p.schoolyard||[],'win')}</div>
-          <div class="d-lbl">Fantasy tribe</div>
+          ${p.mergePick?`<div class="d-lbl">Merge pick ★ (Ep 7+)</div><div class="chip-row">${chipList([p.mergePick],'tribe')}</div>`:''}
+<div class="d-lbl">Fantasy tribe</div>
           <div class="chip-row">${chipList(p.tribe||[],'tribe')}</div>
           ${episodeCols.length?`<div class="d-lbl">Points by episode</div><div class="ep-pips">${epPips(p)}</div>`:''}
         </div></div>
